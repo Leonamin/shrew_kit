@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shrew_kit/test_animdated_list_view.dart';
 import 'package:shrew_kit/view/jump_page_view.dart';
 
 void main() => runApp(const MyApp());
@@ -31,7 +32,11 @@ class HomeView extends StatelessWidget {
         child: Column(
           children: [
             _buildTile(
-                context: context, text: 'JumpPageView', child: JumpPageView())
+                context: context, text: 'JumpPageView', child: JumpPageView()),
+            _buildTile(
+                context: context,
+                text: 'TestAnimatedListView',
+                child: TestAnimatedListView()),
           ],
         ),
       ),
