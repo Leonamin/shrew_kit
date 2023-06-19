@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 class JumpPageView extends StatefulWidget {
+  const JumpPageView({super.key});
+
   @override
-  _JumpPageViewState createState() => _JumpPageViewState();
+  State<JumpPageView> createState() => _JumpPageViewState();
 }
 
 class _JumpPageViewState extends State<JumpPageView> {
