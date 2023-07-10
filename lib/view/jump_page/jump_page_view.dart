@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 class JumpPageView extends StatefulWidget {
+  const JumpPageView({super.key});
+
   @override
-  _JumpPageViewState createState() => _JumpPageViewState();
+  State<JumpPageView> createState() => _JumpPageViewState();
 }
 
 class _JumpPageViewState extends State<JumpPageView> {
@@ -28,7 +30,7 @@ class _JumpPageViewState extends State<JumpPageView> {
     pageController.animateToPage(
       0,
       curve: Curves.easeIn,
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
     );
   }
 
@@ -37,7 +39,7 @@ class _JumpPageViewState extends State<JumpPageView> {
     await pageController.animateToPage(
       7,
       curve: Curves.easeIn,
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
     );
   }
 
@@ -73,7 +75,7 @@ class _JumpPageViewState extends State<JumpPageView> {
     await pageController.animateToPage(
       quickJumpTarget,
       curve: Curves.easeIn,
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
     );
     pageController.jumpToPage(pageTarget);
   }
@@ -91,14 +93,14 @@ class _JumpPageViewState extends State<JumpPageView> {
 
   List<Widget> createPageContents() {
     return <Widget>[
-      PageContent(1),
-      PageContent(2),
-      PageContent(3),
-      PageContent(4),
-      PageContent(5),
-      PageContent(6),
-      PageContent(7),
-      PageContent(8),
+      const PageContent(1),
+      const PageContent(2),
+      const PageContent(3),
+      const PageContent(4),
+      const PageContent(5),
+      const PageContent(6),
+      const PageContent(7),
+      const PageContent(8),
     ];
   }
 
@@ -111,18 +113,18 @@ class _JumpPageViewState extends State<JumpPageView> {
           child: Column(
             children: <Widget>[
               ElevatedButton.icon(
-                label: Text('Animate to 1st page'),
-                icon: Icon(Icons.chevron_left),
+                label: const Text('Animate to 1st page'),
+                icon: const Icon(Icons.chevron_left),
                 onPressed: animateToOne,
               ),
               ElevatedButton.icon(
-                label: Text('Combine to 8th page'),
-                icon: Icon(Icons.chevron_right),
+                label: const Text('Combine to 8th page'),
+                icon: const Icon(Icons.chevron_right),
                 onPressed: jumpAnimateEight,
               ),
               ElevatedButton.icon(
-                label: Text('Flash Jump to 8th page'),
-                icon: Icon(Icons.chevron_right),
+                label: const Text('Flash Jump to 8th page'),
+                icon: const Icon(Icons.chevron_right),
                 onPressed: flashToEight,
               ),
             ],
@@ -145,7 +147,7 @@ class _JumpPageViewState extends State<JumpPageView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Page View Jump'),
+        title: const Text('Page View Jump'),
       ),
       body: Center(
         child: Column(
@@ -170,7 +172,7 @@ class _JumpPageViewState extends State<JumpPageView> {
 class PageContent extends StatelessWidget {
   final int pageIndex;
 
-  PageContent(this.pageIndex);
+  const PageContent(this.pageIndex, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -193,11 +195,13 @@ class PageContent extends StatelessWidget {
 }
 
 class AddNoteSettings extends StatelessWidget {
+  const AddNoteSettings({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.blue,
-      child: Center(child: Text("AddNoteSettings")),
+      child: const Center(child: Text("AddNoteSettings")),
     );
   }
 }
