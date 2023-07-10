@@ -2,7 +2,7 @@ class ViewRoutes {
   static const String homePath = '/';
   static const String jumpPageViewRoute = '/jump_page_view';
   static const String testAnimatedListViewRoute = '/test_animated_list_view';
-  static const String cubeShrewViewRoute = '/cube_shrew_view';
+  static const String cubeShrewViewRoute = '/cube_hamster_view/cube_shrew_view';
   static const String cubeHamsterViewRoute = '/cube_hamster_view';
 
   static const String jumpPageViewPath = 'jump_page_view';

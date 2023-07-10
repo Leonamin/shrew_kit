@@ -22,20 +22,11 @@ class CubeHamsterView extends StatelessWidget {
   }
 
   void onTapMain(BuildContext context) {
-    context.goNamed(ViewRoutes.cubeShrewViewRoute, extra: {
+    context.go(ViewRoutes.cubeShrewViewRoute, extra: {
       'routeBuilder': CubePageRoute(
-        const CubeHamsterView(),
+        this,
         const CubeShrewView(),
       ),
     });
-    // Navigator.of(context).pushAndRemoveUntil(
-    //     CubePageRoute(
-    //       const CubeHamsterView(),
-    //       const ShrewHomeView(),
-    //     ),
-    //     (route) {
-    //       return false;
-    //     },
-    //   );
   }
 }
