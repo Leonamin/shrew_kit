@@ -8,6 +8,7 @@ import 'package:shrew_kit/view/cube_transition/cube_hamster_view.dart';
 import 'package:shrew_kit/view/cube_transition/cube_shrew_view.dart';
 import 'package:shrew_kit/view/home/home_view.dart';
 import 'package:shrew_kit/view/jump_page/jump_page_view.dart';
+import 'package:shrew_kit/view/neo/neo_view.dart';
 
 final router = GoRouter(
   initialLocation: ViewRoutes.homePath,
@@ -75,6 +76,10 @@ final router = GoRouter(
               builder: (context, state) => const CubeShrewView(),
             ),
           ],
+        ),
+        GoRoute(
+          path: ViewRoutes.neoPath,
+          builder: (context, state) => const NeoView(),
         ),
       ],
     ),
