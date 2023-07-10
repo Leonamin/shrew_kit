@@ -1,6 +1,5 @@
-
 import 'package:flutter/material.dart';
-import 'package:shrew_kit/view/fold_container.dart';
+import 'package:shrew_kit/view/fold/fold_container.dart';
 
 class PivotListView extends StatefulWidget {
   const PivotListView({

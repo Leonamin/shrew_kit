@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shrew_kit/view/pivot_list_view.dart';
+import 'package:shrew_kit/view/pivot_list/pivot_list_view.dart';
 
 class TestAnimatedListView extends StatefulWidget {
   const TestAnimatedListView({super.key});
@@ -17,25 +17,25 @@ class _TestAnimatedListViewState extends State<TestAnimatedListView> {
       width: double.infinity,
       color: Colors.red,
       height: 300,
-      child: Text('1'),
+      child: const Text('1'),
     ),
     Container(
       width: double.infinity,
       color: Colors.blue,
       height: 300,
-      child: Text('2'),
+      child: const Text('2'),
     ),
     Container(
       width: double.infinity,
       color: Colors.cyan,
       height: 300,
-      child: Text('3'),
+      child: const Text('3'),
     ),
     Container(
       width: double.infinity,
       color: Colors.green,
       height: 300,
-      child: Text('4'),
+      child: const Text('4'),
     ),
   ];
 
@@ -44,19 +44,19 @@ class _TestAnimatedListViewState extends State<TestAnimatedListView> {
       width: double.infinity,
       color: Colors.red,
       height: 300,
-      child: Text('1'),
+      child: const Text('1'),
     ),
     Container(
       width: double.infinity,
       color: Colors.blue,
       height: 300,
-      child: Text('2'),
+      child: const Text('2'),
     ),
     Container(
       width: double.infinity,
       color: Colors.green,
       height: 300,
-      child: Text('4'),
+      child: const Text('4'),
     ),
   ];
 
@@ -74,7 +74,7 @@ class _TestAnimatedListViewState extends State<TestAnimatedListView> {
           children: [
             PivotListView(
                 pivotIndex: index,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 chilren: (toggleWidgetList) ? widget1List : widget2List),
             Row(
               children: [
@@ -84,14 +84,14 @@ class _TestAnimatedListViewState extends State<TestAnimatedListView> {
                         if (index > 0) index = index - 1;
                       });
                     },
-                    child: Text('-')),
+                    child: const Text('-')),
                 ElevatedButton(
                     onPressed: () {
                       setState(() {
                         if (index < listLength) index = index + 1;
                       });
                     },
-                    child: Text('+')),
+                    child: const Text('+')),
               ],
             ),
             Row(
@@ -102,7 +102,7 @@ class _TestAnimatedListViewState extends State<TestAnimatedListView> {
                         toggleWidgetList = !toggleWidgetList;
                       });
                     },
-                    child: Text('toggle')),
+                    child: const Text('toggle')),
               ],
             )
           ],
