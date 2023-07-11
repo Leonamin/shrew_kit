@@ -38,6 +38,12 @@ class HomeView extends StatelessWidget {
                 context.go(ViewRoutes.neoRoute);
               },
             ),
+            _RouteTile(
+              text: 'Concentric',
+              onTap: () {
+                context.go(ViewRoutes.concentricRoute);
+              },
+            ),
           ],
         ),
       ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shrew_kit/common/config/routes.dart';
 import 'package:shrew_kit/view/animated_list/test_animdated_list_view.dart';
+import 'package:shrew_kit/view/concentric/concentric_view.dart';
 import 'package:shrew_kit/view/cube_transition/cube_hamster_view.dart';
 import 'package:shrew_kit/view/cube_transition/cube_shrew_view.dart';
 import 'package:shrew_kit/view/home/home_view.dart';
@@ -80,6 +81,10 @@ final router = GoRouter(
         GoRoute(
           path: ViewRoutes.neoPath,
           builder: (context, state) => const NeoView(),
+        ),
+        GoRoute(
+          path: ViewRoutes.concentricPath,
+          builder: (context, state) => const ConcentricView(),
         ),
       ],
     ),
