@@ -27,53 +27,53 @@ final router = GoRouter(
         ),
         GoRoute(
           path: ViewRoutes.cubeHamsterViewPath,
-          pageBuilder: (context, state) => CustomTransitionPage(
-            child: CubeHamsterView(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-              return Stack(
-                children: <Widget>[
-                  SlideTransition(
-                    position: Tween<Offset>(
-                      begin: Offset.zero,
-                      end: const Offset(-1.0, 0.0),
-                    ).animate(animation),
-                    child: Container(
-                      color: Colors.white,
-                      child: Transform(
-                        transform: Matrix4.identity()
-                          ..setEntry(3, 2, 0.003)
-                          ..rotateY(pi / 2 * animation.value),
-                        alignment: FractionalOffset.centerRight,
-                        child: child,
-                      ),
-                    ),
-                  ),
-                  SlideTransition(
-                    position: Tween<Offset>(
-                      begin: const Offset(1.0, 0.0),
-                      end: Offset.zero,
-                    ).animate(animation),
-                    child: Container(
-                      color: Colors.white,
-                      child: Transform(
-                        transform: Matrix4.identity()
-                          ..setEntry(3, 2, 0.003)
-                          ..rotateY(pi / 2 * (animation.value - 1)),
-                        alignment: FractionalOffset.centerLeft,
-                        child: child,
-                      ),
-                    ),
-                  )
-                ],
-              );
-            },
-          ),
           builder: (context, state) => const CubeHamsterView(),
           routes: [
             GoRoute(
               path: ViewRoutes.cubeShrewViewPath,
               builder: (context, state) => const CubeShrewView(),
+              pageBuilder: (context, state) => CustomTransitionPage(
+                child: CubeShrewView(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return Stack(
+                    children: <Widget>[
+                      SlideTransition(
+                        position: Tween<Offset>(
+                          begin: Offset.zero,
+                          end: const Offset(-1.0, 0.0),
+                        ).animate(animation),
+                        child: Container(
+                          color: Colors.white,
+                          child: Transform(
+                            transform: Matrix4.identity()
+                              ..setEntry(3, 2, 0.003)
+                              ..rotateY(pi / 2 * animation.value),
+                            alignment: FractionalOffset.centerRight,
+                            child: CubeHamsterView(),
+                          ),
+                        ),
+                      ),
+                      SlideTransition(
+                        position: Tween<Offset>(
+                          begin: const Offset(1.0, 0.0),
+                          end: Offset.zero,
+                        ).animate(animation),
+                        child: Container(
+                          color: Colors.white,
+                          child: Transform(
+                            transform: Matrix4.identity()
+                              ..setEntry(3, 2, 0.003)
+                              ..rotateY(pi / 2 * (animation.value - 1)),
+                            alignment: FractionalOffset.centerLeft,
+                            child: child,
+                          ),
+                        ),
+                      )
+                    ],
+                  );
+                },
+              ),
             ),
           ],
         ),

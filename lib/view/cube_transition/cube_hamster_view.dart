@@ -13,9 +13,11 @@ class CubeHamsterView extends StatelessWidget {
     return Scaffold(
       body: GestureDetector(
         onTap: () => onTapMain(context),
-        child: const Image(
-          image: AssetImage(AssetConstant.hamsterHomeImage),
-          fit: BoxFit.fitHeight,
+        child: const Center(
+          child: Image(
+            image: AssetImage(AssetConstant.hamsterHomeImage),
+            fit: BoxFit.fitHeight,
+          ),
         ),
       ),
     );

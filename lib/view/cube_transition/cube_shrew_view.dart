@@ -10,9 +10,11 @@ class CubeShrewView extends StatelessWidget {
     return Scaffold(
       body: GestureDetector(
         onTap: () => onTapMain(context),
-        child: const Image(
-          image: AssetImage(AssetConstant.shrewHomeImage),
-          fit: BoxFit.cover,
+        child: const Center(
+          child: Image(
+            image: AssetImage(AssetConstant.shrewHomeImage),
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );
