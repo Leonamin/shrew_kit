@@ -44,6 +44,12 @@ class HomeView extends StatelessWidget {
                 context.go(ViewRoutes.concentricRoute);
               },
             ),
+            _RouteTile(
+              text: 'FadeInOut',
+              onTap: () {
+                context.go(ViewRoutes.fadeInOutRoute);
+              },
+            ),
           ],
         ),
       ),
