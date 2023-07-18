@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:shrew_kit/view/anime/component/check_button.dart';
+import 'package:shrew_kit/view/anime/component/ssaa_button.dart';
 
 class AnimationTest extends StatefulWidget {
   const AnimationTest({super.key});
@@ -56,6 +57,15 @@ class _AnimationTestState extends State<AnimationTest>
                       ),
                     ),
                   ),
+                  SSAAButton(
+                      isCompleted: isDone,
+                      onPressed: () {
+                        Future.delayed(
+                          Duration(milliseconds: animationDuration ~/ 2),
+                          () => _animate(),
+                        );
+                        // _animate();
+                      }),
                 ],
               );
             }),
