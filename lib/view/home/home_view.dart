@@ -26,6 +26,30 @@ class HomeView extends StatelessWidget {
                 context.go(ViewRoutes.testAnimatedListViewRoute);
               },
             ),
+            _RouteTile(
+              text: 'Hamster',
+              onTap: () {
+                context.go(ViewRoutes.cubeHamsterViewRoute);
+              },
+            ),
+            _RouteTile(
+              text: 'Neo',
+              onTap: () {
+                context.go(ViewRoutes.neoRoute);
+              },
+            ),
+            _RouteTile(
+              text: 'Concentric',
+              onTap: () {
+                context.go(ViewRoutes.concentricRoute);
+              },
+            ),
+            _RouteTile(
+              text: 'FadeInOut',
+              onTap: () {
+                context.go(ViewRoutes.fadeInOutRoute);
+              },
+            ),
           ],
         ),
       ),
