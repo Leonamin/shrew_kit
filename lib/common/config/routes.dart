@@ -7,6 +7,7 @@ class ViewRoutes {
   static const String neoRoute = '/neo';
   static const String concentricRoute = '/concentric';
   static const String fadeInOutRoute = '/fadeinout';
+  static const String testAnimationRoute = '/test_animation';
 
   static const String jumpPageViewPath = 'jump_page_view';
   static const String testAnimatedListViewPath = 'test_animated_list_view';
@@ -15,4 +16,5 @@ class ViewRoutes {
   static const String neoPath = 'neo';
   static const String concentricPath = 'concentric';
   static const String fadeInOutPath = 'fadeinout';
+  static const String testAnimationPath = 'test_animation';
 }
