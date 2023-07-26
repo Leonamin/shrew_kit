@@ -1,20 +1,61 @@
-class ViewRoutes {
-  static const String homePath = '/';
-  static const String jumpPageViewRoute = '/jump_page_view';
-  static const String testAnimatedListViewRoute = '/test_animated_list_view';
-  static const String cubeShrewViewRoute = '/cube_hamster_view/cube_shrew_view';
-  static const String cubeHamsterViewRoute = '/cube_hamster_view';
-  static const String neoRoute = '/neo';
-  static const String concentricRoute = '/concentric';
-  static const String fadeInOutRoute = '/fadeinout';
-  static const String testAnimationRoute = '/test_animation';
+enum ShrewRoutes {
+  home,
+  jumpPageView,
+  testAnimatedListView,
+  cubeShrewView,
+  cubeHamsterView,
+  neo,
+  concentric,
+  fadeInOut,
+  testAnimation,
+}
 
-  static const String jumpPageViewPath = 'jump_page_view';
-  static const String testAnimatedListViewPath = 'test_animated_list_view';
-  static const String cubeShrewViewPath = 'cube_shrew_view';
-  static const String cubeHamsterViewPath = 'cube_hamster_view';
-  static const String neoPath = 'neo';
-  static const String concentricPath = 'concentric';
-  static const String fadeInOutPath = 'fadeinout';
-  static const String testAnimationPath = 'test_animation';
+extension ShrewRoutesExt on ShrewRoutes {
+  String get path {
+    switch (this) {
+      // all case
+      case ShrewRoutes.home:
+        return '/';
+      case ShrewRoutes.jumpPageView:
+        return 'jump_page_view';
+      case ShrewRoutes.testAnimatedListView:
+        return 'test_animated_list_view';
+      case ShrewRoutes.cubeShrewView:
+        return 'cube_shrew_view';
+      case ShrewRoutes.cubeHamsterView:
+        return 'cube_hamster_view';
+      case ShrewRoutes.neo:
+        return 'neo';
+      case ShrewRoutes.concentric:
+        return 'concentric';
+      case ShrewRoutes.fadeInOut:
+        return 'fadeinout';
+      case ShrewRoutes.testAnimation:
+        return 'test_animation';
+    }
+  }
+
+  String get name {
+    switch (this) {
+      // all case
+      case ShrewRoutes.home:
+        return 'home';
+      case ShrewRoutes.jumpPageView:
+        return 'jump_page_view';
+      case ShrewRoutes.testAnimatedListView:
+        return 'test_animated_list_view';
+      case ShrewRoutes.cubeShrewView:
+        return 'cube_shrew_view';
+      case ShrewRoutes.cubeHamsterView:
+        return 'cube_hamster_view';
+      case ShrewRoutes.neo:
+        return 'neo';
+      case ShrewRoutes.concentric:
+        return 'concentric';
+      case ShrewRoutes.fadeInOut:
+        return 'fadeinout';
+      case ShrewRoutes.testAnimation:
+        return 'test_animation';
+    }
+  }
 }

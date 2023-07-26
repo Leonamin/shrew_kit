@@ -17,43 +17,43 @@ class HomeView extends StatelessWidget {
             _RouteTile(
               text: 'JumpPageView',
               onTap: () {
-                context.go(ViewRoutes.jumpPageViewRoute);
+                context.goNamed(ShrewRoutes.jumpPageView.name);
               },
             ),
             _RouteTile(
               text: 'TestAnimatedListView',
               onTap: () {
-                context.go(ViewRoutes.testAnimatedListViewRoute);
+                context.goNamed(ShrewRoutes.testAnimatedListView.name);
               },
             ),
             _RouteTile(
               text: 'Hamster',
               onTap: () {
-                context.go(ViewRoutes.cubeHamsterViewRoute);
+                context.goNamed(ShrewRoutes.cubeHamsterView.name);
               },
             ),
             _RouteTile(
               text: 'Neo',
               onTap: () {
-                context.go(ViewRoutes.neoRoute);
+                context.goNamed(ShrewRoutes.neo.name);
               },
             ),
             _RouteTile(
               text: 'Concentric',
               onTap: () {
-                context.go(ViewRoutes.concentricRoute);
+                context.goNamed(ShrewRoutes.concentric.name);
               },
             ),
             _RouteTile(
               text: 'FadeInOut',
               onTap: () {
-                context.go(ViewRoutes.fadeInOutRoute);
+                context.goNamed(ShrewRoutes.fadeInOut.name);
               },
             ),
             _RouteTile(
               text: 'AnimationTest',
               onTap: () {
-                context.go(ViewRoutes.testAnimationRoute);
+                context.goNamed(ShrewRoutes.testAnimation.name);
               },
             ),
           ],

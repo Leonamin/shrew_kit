@@ -11,6 +11,7 @@ class CubeHamsterView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: GestureDetector(
         onTap: () => onTapMain(context),
         child: const Center(
@@ -24,7 +25,7 @@ class CubeHamsterView extends StatelessWidget {
   }
 
   void onTapMain(BuildContext context) {
-    context.go(ViewRoutes.cubeShrewViewRoute, extra: {
+    context.goNamed(ShrewRoutes.cubeShrewView.name, extra: {
       'routeBuilder': CubePageRoute(
         this,
         const CubeShrewView(),
