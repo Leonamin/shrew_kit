@@ -69,7 +69,7 @@ final router = GoRouter(
         GoRoute(
           path: ShrewRoutes.testSlider.path,
           name: ShrewRoutes.testSlider.name,
-          builder: (context, state) => const TestSliderView(),
+          builder: (context, state) => TestSliderView(),
         )
       ],
     ),
