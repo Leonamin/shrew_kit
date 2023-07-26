@@ -14,29 +14,34 @@ import 'package:shrew_kit/view/neo/neo_view.dart';
 import 'package:shrew_kit/view/transition/fadeinout/fadeinout_view.dart';
 
 final router = GoRouter(
-  initialLocation: ViewRoutes.homePath,
+  initialLocation: ShrewRoutes.home.path,
   routes: [
     GoRoute(
-      path: ViewRoutes.homePath,
+      path: ShrewRoutes.home.path,
+      name: ShrewRoutes.home.name,
       builder: (context, state) => const HomeView(),
       routes: [
         GoRoute(
-          path: ViewRoutes.jumpPageViewPath,
+          path: ShrewRoutes.jumpPageView.path,
+          name: ShrewRoutes.jumpPageView.name,
           builder: (context, state) => const JumpPageView(),
         ),
         GoRoute(
-          path: ViewRoutes.testAnimatedListViewPath,
+          path: ShrewRoutes.testAnimatedListView.path,
+          name: ShrewRoutes.testAnimatedListView.name,
           builder: (context, state) => const TestAnimatedListView(),
         ),
         GoRoute(
-          path: ViewRoutes.cubeHamsterViewPath,
+          path: ShrewRoutes.cubeHamsterView.path,
+          name: ShrewRoutes.cubeHamsterView.name,
           builder: (context, state) => const CubeHamsterView(),
           routes: [
             GoRoute(
-              path: ViewRoutes.cubeShrewViewPath,
+              path: ShrewRoutes.cubeShrewView.path,
+              name: ShrewRoutes.cubeShrewView.name,
               builder: (context, state) => const CubeShrewView(),
               pageBuilder: (context, state) => CustomTransitionPage(
-                child: CubeShrewView(),
+                child: const CubeShrewView(),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
                   return Stack(
@@ -81,22 +86,25 @@ final router = GoRouter(
           ],
         ),
         GoRoute(
-          path: ViewRoutes.neoPath,
+          path: ShrewRoutes.neo.path,
+          name: ShrewRoutes.neo.name,
           builder: (context, state) => const NeoView(),
         ),
         GoRoute(
-          path: ViewRoutes.concentricPath,
+          path: ShrewRoutes.concentric.path,
+          name: ShrewRoutes.concentric.name,
           builder: (context, state) => const ConcentricView(),
         ),
         GoRoute(
-          path: ViewRoutes.fadeInOutPath,
+          path: ShrewRoutes.fadeInOut.path,
+          name: ShrewRoutes.fadeInOut.name,
           builder: (context, state) => const FadeInOutView(),
         ),
         GoRoute(
-            path: ViewRoutes.testAnimationPath,
-            builder: (context, state) {
-              return AnimationTest();
-            }),
+          path: ShrewRoutes.testAnimation.path,
+          name: ShrewRoutes.testAnimation.name,
+          builder: (context, state) => const AnimationTest(),
+        ),
       ],
     ),
   ],
