@@ -10,6 +10,7 @@ const List<ShrewRoutes> homeNestedRoutes = [
   ShrewRoutes.concentric,
   ShrewRoutes.fadeInOut,
   ShrewRoutes.testAnimation,
+  ShrewRoutes.testSlider,
 ];
 
 class HomeView extends StatelessWidget {

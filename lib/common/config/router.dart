@@ -9,6 +9,7 @@ import 'package:shrew_kit/view/cube_transition/cube_shrew_view.dart';
 import 'package:shrew_kit/view/home/home_view.dart';
 import 'package:shrew_kit/view/jump_page/jump_page_view.dart';
 import 'package:shrew_kit/view/neo/neo_view.dart';
+import 'package:shrew_kit/view/slider/test_slider_view.dart';
 import 'package:shrew_kit/view/transition/fadeinout/fadeinout_view.dart';
 
 final router = GoRouter(
@@ -65,6 +66,11 @@ final router = GoRouter(
           name: ShrewRoutes.testAnimation.name,
           builder: (context, state) => const AnimationTest(),
         ),
+        GoRoute(
+          path: ShrewRoutes.testSlider.path,
+          name: ShrewRoutes.testSlider.name,
+          builder: (context, state) => const TestSliderView(),
+        )
       ],
     ),
   ],
