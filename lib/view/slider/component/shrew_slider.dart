@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shrew_kit/util/widget_util.dart';
+import 'package:shrew_kit/view/slider/component/rounded_bar_track_shape.dart';
 import 'package:shrew_kit/view/slider/component/slider_desc.dart';
 
 class ShrewSlider extends StatelessWidget {
@@ -19,6 +20,7 @@ class ShrewSlider extends StatelessWidget {
     ),
     this.thumbColor = Colors.blue,
     this.trackColor = Colors.grey,
+    this.trackHeight = 3,
   }) {
     assert(min < max);
     assert((min <= value && value <= max));
@@ -32,6 +34,7 @@ class ShrewSlider extends StatelessWidget {
   final TextStyle textStyle;
   final Color thumbColor;
   final Color trackColor;
+  final double trackHeight;
 
   double get range => max - min;
 
@@ -45,7 +48,8 @@ class ShrewSlider extends StatelessWidget {
           data: SliderThemeData(
             thumbColor: thumbColor,
             overlayColor: Colors.transparent,
-            trackHeight: 3,
+            trackHeight: trackHeight,
+            trackShape: RoundedBarTrackShape(),
             thumbShape: thumbShape,
           ),
           child: Slider(
