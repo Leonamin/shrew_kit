@@ -50,6 +50,12 @@ class HomeView extends StatelessWidget {
                 context.go(ViewRoutes.fadeInOutRoute);
               },
             ),
+            _RouteTile(
+              text: 'AnimationTest',
+              onTap: () {
+                context.go(ViewRoutes.testAnimationRoute);
+              },
+            ),
           ],
         ),
       ),
