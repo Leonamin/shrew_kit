@@ -11,6 +11,7 @@ class CubeHamsterView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: GestureDetector(
         onTap: () => onTapMain(context),
         child: const Center(

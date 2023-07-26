@@ -24,42 +24,45 @@ class _ConcentricViewState extends State<ConcentricView>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
-        return ClipPath(
-          clipper: ConcentricClipper(progress: _controller.value),
-          child: Scaffold(
-            body: Stack(
-              children: [
-                Positioned(
-                  bottom: 50,
-                  left: 0,
-                  right: 0,
-                  child: GestureDetector(
-                    child: Container(
-                      height: 100,
-                      width: 100,
-                      decoration: const BoxDecoration(
-                          color: Colors.cyan, shape: BoxShape.circle),
+    return Scaffold(
+      appBar: AppBar(),
+      body: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+          return ClipPath(
+            clipper: ConcentricClipper(progress: _controller.value),
+            child: Scaffold(
+              body: Stack(
+                children: [
+                  Positioned(
+                    bottom: 50,
+                    left: 0,
+                    right: 0,
+                    child: GestureDetector(
+                      child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: const BoxDecoration(
+                            color: Colors.cyan, shape: BoxShape.circle),
+                      ),
+                      onTap: () {
+                        if (isForward) {
+                          _controller.reverse();
+                        } else {
+                          _controller.forward();
+                        }
+                        setState(() {
+                          isForward = !isForward;
+                        });
+                      },
                     ),
-                    onTap: () {
-                      if (isForward) {
-                        _controller.reverse();
-                      } else {
-                        _controller.forward();
-                      }
-                      setState(() {
-                        isForward = !isForward;
-                      });
-                    },
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

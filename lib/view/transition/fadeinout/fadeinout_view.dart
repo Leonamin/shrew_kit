@@ -24,6 +24,7 @@ class _FadeInOutViewState extends State<FadeInOutView>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Stack(
         children: [
           Container(
