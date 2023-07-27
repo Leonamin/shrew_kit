@@ -4,7 +4,7 @@ import 'package:shrew_kit/util/widget_util.dart';
 import 'package:shrew_kit/view/slider/component/rounded_bar_track_shape.dart';
 import 'package:shrew_kit/view/slider/component/slider_desc.dart';
 
-class ShrewSlider extends StatelessWidget {
+class ShrewSlider extends StatefulWidget {
   ShrewSlider({
     super.key,
     required this.sliderDescList,
@@ -36,7 +36,12 @@ class ShrewSlider extends StatelessWidget {
   final Color trackColor;
   final double trackHeight;
 
-  double get range => max - min;
+  @override
+  State<ShrewSlider> createState() => _ShrewSliderState();
+}
+
+class _ShrewSliderState extends State<ShrewSlider> {
+  double get range => widget.max - widget.min;
 
   @override
   Widget build(BuildContext context) {
@@ -46,20 +51,20 @@ class ShrewSlider extends StatelessWidget {
       children: [
         SliderTheme(
           data: SliderThemeData(
-            thumbColor: thumbColor,
+            thumbColor: widget.thumbColor,
             overlayColor: Colors.transparent,
-            trackHeight: trackHeight,
+            trackHeight: widget.trackHeight,
             trackShape: RoundedBarTrackShape(),
-            thumbShape: thumbShape,
+            thumbShape: widget.thumbShape,
           ),
           child: Slider(
-            thumbColor: thumbColor,
-            activeColor: trackColor,
-            inactiveColor: trackColor,
-            value: value,
+            thumbColor: widget.thumbColor,
+            activeColor: widget.trackColor,
+            inactiveColor: widget.trackColor,
+            value: widget.value,
             onChanged: _onChanged,
-            min: min,
-            max: max,
+            min: widget.min,
+            max: widget.max,
           ),
         ),
         const SizedBox(height: 10),
@@ -67,8 +72,8 @@ class ShrewSlider extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: _SliderDescWidget(
             rangeValue: range,
-            descList: sliderDescList,
-            textStyle: textStyle,
+            descList: widget.sliderDescList,
+            textStyle: widget.textStyle,
           ),
         ),
       ],
@@ -78,7 +83,7 @@ class ShrewSlider extends StatelessWidget {
   void _onChanged(double value) {
     if (value == value.toInt()) return;
     HapticFeedback.mediumImpact();
-    onChanged?.call(value);
+    widget.onChanged?.call(value);
   }
 }
 
