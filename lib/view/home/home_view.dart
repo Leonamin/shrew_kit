@@ -2,6 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shrew_kit/common/config/routes.dart';
 
+const List<ShrewRoutes> homeNestedRoutes = [
+  ShrewRoutes.jumpPageView,
+  ShrewRoutes.testAnimatedListView,
+  ShrewRoutes.cubeShrewView,
+  ShrewRoutes.neo,
+  ShrewRoutes.concentric,
+  ShrewRoutes.fadeInOut,
+  ShrewRoutes.testAnimation,
+  ShrewRoutes.testSlider,
+];
+
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
@@ -14,48 +25,14 @@ class HomeView extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _RouteTile(
-              text: 'JumpPageView',
-              onTap: () {
-                context.goNamed(ShrewRoutes.jumpPageView.name);
-              },
-            ),
-            _RouteTile(
-              text: 'TestAnimatedListView',
-              onTap: () {
-                context.goNamed(ShrewRoutes.testAnimatedListView.name);
-              },
-            ),
-            _RouteTile(
-              text: 'Hamster',
-              onTap: () {
-                context.goNamed(ShrewRoutes.cubeHamsterView.name);
-              },
-            ),
-            _RouteTile(
-              text: 'Neo',
-              onTap: () {
-                context.goNamed(ShrewRoutes.neo.name);
-              },
-            ),
-            _RouteTile(
-              text: 'Concentric',
-              onTap: () {
-                context.goNamed(ShrewRoutes.concentric.name);
-              },
-            ),
-            _RouteTile(
-              text: 'FadeInOut',
-              onTap: () {
-                context.goNamed(ShrewRoutes.fadeInOut.name);
-              },
-            ),
-            _RouteTile(
-              text: 'AnimationTest',
-              onTap: () {
-                context.goNamed(ShrewRoutes.testAnimation.name);
-              },
-            ),
+            ...homeNestedRoutes.map((e) {
+              return _RouteTile(
+                text: e.name,
+                onTap: () {
+                  context.goNamed(e.name);
+                },
+              );
+            }).toList(),
           ],
         ),
       ),

@@ -8,6 +8,7 @@ enum ShrewRoutes {
   concentric,
   fadeInOut,
   testAnimation,
+  testSlider,
 }
 
 extension ShrewRoutesExt on ShrewRoutes {
@@ -32,6 +33,8 @@ extension ShrewRoutesExt on ShrewRoutes {
         return 'fadeinout';
       case ShrewRoutes.testAnimation:
         return 'test_animation';
+      case ShrewRoutes.testSlider:
+        return 'test_slider';
     }
   }
 
@@ -56,6 +59,8 @@ extension ShrewRoutesExt on ShrewRoutes {
         return 'fadeinout';
       case ShrewRoutes.testAnimation:
         return 'test_animation';
+      case ShrewRoutes.testSlider:
+        return 'test_slider';
     }
   }
 }
