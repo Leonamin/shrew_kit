@@ -9,6 +9,7 @@ enum ShrewRoutes {
   fadeInOut,
   testAnimation,
   testSlider,
+  colorChart,
 }
 
 extension ShrewRoutesExt on ShrewRoutes {
@@ -35,6 +36,8 @@ extension ShrewRoutesExt on ShrewRoutes {
         return 'test_animation';
       case ShrewRoutes.testSlider:
         return 'test_slider';
+      case ShrewRoutes.colorChart:
+        return 'color_chart';
     }
   }
 
@@ -61,6 +64,8 @@ extension ShrewRoutesExt on ShrewRoutes {
         return 'test_animation';
       case ShrewRoutes.testSlider:
         return 'test_slider';
+      case ShrewRoutes.colorChart:
+        return 'color_chart';
     }
   }
 }
