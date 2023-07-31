@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shrew_kit/common/config/routes.dart';
 import 'package:shrew_kit/common/config/page_builder.dart';
@@ -11,6 +10,7 @@ import 'package:shrew_kit/view/cube_transition/cube_shrew_view.dart';
 import 'package:shrew_kit/view/home/home_view.dart';
 import 'package:shrew_kit/view/jump_page/jump_page_view.dart';
 import 'package:shrew_kit/view/neo/neo_view.dart';
+import 'package:shrew_kit/view/scheduling/custom/custom_scheduling_view.dart';
 import 'package:shrew_kit/view/scheduling/libs/lib_calendar_day_view.dart';
 import 'package:shrew_kit/view/scheduling/libs/lib_calendar_view.dart';
 import 'package:shrew_kit/view/scheduling/libs/lib_flutter_week_view.dart';
@@ -91,7 +91,7 @@ final router = GoRouter(
             GoRoute(
               path: SchedulingRoutes.custom.path,
               name: SchedulingRoutes.custom.name,
-              builder: (context, state) => const CustomScrollView(),
+              builder: (context, state) => const CustomSchedulingView(),
             ),
             GoRoute(
               path: SchedulingRoutes.calendarDayView.path,
