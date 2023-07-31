@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shrew_kit/common/config/routes.dart';
 import 'package:shrew_kit/common/config/page_builder.dart';
@@ -10,6 +11,10 @@ import 'package:shrew_kit/view/cube_transition/cube_shrew_view.dart';
 import 'package:shrew_kit/view/home/home_view.dart';
 import 'package:shrew_kit/view/jump_page/jump_page_view.dart';
 import 'package:shrew_kit/view/neo/neo_view.dart';
+import 'package:shrew_kit/view/scheduling/libs/lib_calendar_day_view.dart';
+import 'package:shrew_kit/view/scheduling/libs/lib_calendar_view.dart';
+import 'package:shrew_kit/view/scheduling/libs/lib_flutter_week_view.dart';
+import 'package:shrew_kit/view/scheduling/libs/lib_table_calendar_view.dart';
 import 'package:shrew_kit/view/scheduling/scheduling_view.dart';
 import 'package:shrew_kit/view/slider/test_slider_view.dart';
 import 'package:shrew_kit/view/transition/fadeinout/fadeinout_view.dart';
@@ -82,6 +87,33 @@ final router = GoRouter(
           path: ShrewRoutes.scheduling.path,
           name: ShrewRoutes.scheduling.name,
           builder: (context, state) => const SchedulingView(),
+          routes: [
+            GoRoute(
+              path: SchedulingRoutes.custom.path,
+              name: SchedulingRoutes.custom.name,
+              builder: (context, state) => const CustomScrollView(),
+            ),
+            GoRoute(
+              path: SchedulingRoutes.calendarDayView.path,
+              name: SchedulingRoutes.calendarDayView.name,
+              builder: (context, state) => const LibCalendarDayView(),
+            ),
+            GoRoute(
+              path: SchedulingRoutes.calendarView.path,
+              name: SchedulingRoutes.calendarView.name,
+              builder: (context, state) => const LibCalendarView(),
+            ),
+            GoRoute(
+              path: SchedulingRoutes.flutterWeekView.path,
+              name: SchedulingRoutes.flutterWeekView.name,
+              builder: (context, state) => const LibFlutterWeekView(),
+            ),
+            GoRoute(
+              path: SchedulingRoutes.tableCalendar.path,
+              name: SchedulingRoutes.tableCalendar.name,
+              builder: (context, state) => const LibTableCalendarView(),
+            ),
+          ],
         ),
       ],
     ),

@@ -13,6 +13,14 @@ enum ShrewRoutes {
   scheduling,
 }
 
+enum SchedulingRoutes {
+  custom,
+  flutterWeekView,
+  tableCalendar,
+  calendarView,
+  calendarDayView,
+}
+
 extension ShrewRoutesExt on ShrewRoutes {
   String get path {
     switch (this) {
@@ -71,6 +79,40 @@ extension ShrewRoutesExt on ShrewRoutes {
         return 'color_chart';
       case ShrewRoutes.scheduling:
         return 'scheduling';
+    }
+  }
+}
+
+extension SchedulingRoutesExt on SchedulingRoutes {
+  String get path {
+    switch (this) {
+      // all case
+      case SchedulingRoutes.custom:
+        return 'custom';
+      case SchedulingRoutes.flutterWeekView:
+        return 'flutter_week_view';
+      case SchedulingRoutes.tableCalendar:
+        return 'table_calendar';
+      case SchedulingRoutes.calendarView:
+        return 'calendar_view';
+      case SchedulingRoutes.calendarDayView:
+        return 'calendar_day_view';
+    }
+  }
+
+  String get name {
+    switch (this) {
+      // all case
+      case SchedulingRoutes.custom:
+        return 'custom';
+      case SchedulingRoutes.flutterWeekView:
+        return 'flutter_week_view';
+      case SchedulingRoutes.tableCalendar:
+        return 'table_calendar';
+      case SchedulingRoutes.calendarView:
+        return 'calendar_view';
+      case SchedulingRoutes.calendarDayView:
+        return 'calendar_day_view';
     }
   }
 }
