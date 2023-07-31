@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:logger/logger.dart';
 import 'package:shrew_kit/common/config/router.dart';
 
 final logger = Logger();
 
-void main() => runApp(const MyApp());
+void main() {
+  initializeDateFormatting();
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
