@@ -1,13 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_week_view/flutter_week_view.dart';
+import 'package:shrew_kit/util/date_time_ext.dart';
 
-class LibFlutterWeekView extends StatelessWidget {
+class LibFlutterWeekView extends StatefulWidget {
   const LibFlutterWeekView({super.key});
+
+  @override
+  State<LibFlutterWeekView> createState() => _LibFlutterWeekViewState();
+}
+
+class _LibFlutterWeekViewState extends State<LibFlutterWeekView> {
+  final _todayStart = DateTimeExt.getToday();
+  final _tomorrowStart = DateTimeExt.getToday().add(Duration(days: 1));
+
+  List<DateTime> _testDateTime = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    for (var i = 0; i < 22; i++) {
+      _testDateTime.add(_todayStart.add(Duration(minutes: i * 15)));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('flutter_week_view'),
+      ),
       body: Builder(builder: (_) {
         return Builder(
           builder: (context) {
@@ -19,42 +41,18 @@ class LibFlutterWeekView extends StatelessWidget {
                 print(date);
               },
               dragAndDropOptions: DragAndDropOptions(
-                onEventDragged: (event, newStartTime) {
-                  print('Event moved to $newStartTime');
-                },
+                onEventDragged: (event, newStartTime) {},
               ),
               date: now,
               events: [
-                FlutterWeekViewEvent(
-                  title: 'An event 1',
-                  description: 'A description 1',
-                  start: date.subtract(Duration(hours: 1)),
-                  end: date.add(Duration(hours: 18, minutes: 30)),
-                ),
-                FlutterWeekViewEvent(
-                  title: 'An event 2',
-                  description: 'A description 2',
-                  start: date.add(Duration(hours: 19)),
-                  end: date.add(Duration(hours: 22)),
-                ),
-                FlutterWeekViewEvent(
-                  title: 'An event 3',
-                  description: 'A description 3',
-                  start: date.add(Duration(hours: 23, minutes: 30)),
-                  end: date.add(Duration(hours: 25, minutes: 30)),
-                ),
-                FlutterWeekViewEvent(
-                  title: 'An event 4',
-                  description: 'A description 4',
-                  start: date.add(Duration(hours: 20)),
-                  end: date.add(Duration(hours: 21)),
-                ),
-                FlutterWeekViewEvent(
-                  title: 'An event 5',
-                  description: 'A description 5',
-                  start: date.add(Duration(hours: 20)),
-                  end: date.add(Duration(hours: 21)),
-                ),
+                ..._testDateTime.map((e) {
+                  return FlutterWeekViewEvent(
+                    title: 'Event ${e.minute}',
+                    description: 'A description 1',
+                    start: e,
+                    end: e.add(const Duration(hours: 1)),
+                  );
+                }).toList(),
               ],
               style: DayViewStyle.fromDate(
                 date: now,
