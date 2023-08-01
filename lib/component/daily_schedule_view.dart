@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shrew_kit/component/builders.dart';
 import 'package:shrew_kit/component/daily_schedule_style.dart';
 import 'package:shrew_kit/component/hour_minute.dart';
 import 'package:shrew_kit/component/schedule_unit.dart';
@@ -64,6 +65,7 @@ class _DailyScheduleViewState extends State<DailyScheduleView> {
       height: calculateHeight(),
       child: Stack(children: [
         // add Background
+        createBackground(),
         // add Gesture
         gesture,
         // add Events
@@ -79,6 +81,15 @@ class _DailyScheduleViewState extends State<DailyScheduleView> {
 
     return mainWidget;
   }
+
+  Widget createBackground() => Positioned.fill(
+        child: CustomPaint(
+          painter: widget.style.createBackgroundPainter(
+            view: widget,
+            topOffsetCalculator: calculateTopOffset,
+          ),
+        ),
+      );
 
   // 호버링 관련
   void onPreviewStart(LongPressStartDetails details) {
@@ -113,7 +124,7 @@ class _DailyScheduleViewState extends State<DailyScheduleView> {
     HourMinute? minimumTime,
     double? unitRowHeight,
   }) =>
-      defaultTopOffsetCalculator(
+      DefaultBuilders.defaultTopOffsetCalculator(
         time,
         minimumTime: minimumTime ?? widget.minimumTime,
         unitRowHeight: unitRowHeight ?? widget.style.unitRowHeight,
@@ -144,18 +155,6 @@ class _DailyScheduleViewState extends State<DailyScheduleView> {
     );
     return calculateTopOffset(clampTime,
         unitRowHeight: widget.style.unitRowHeight);
-  }
-
-  // 전역 유틸
-  static double defaultTopOffsetCalculator(
-    HourMinute time, {
-    HourMinute minimumTime = HourMinute.min,
-    ScheduleUnit unit = ScheduleUnit.min30,
-    double unitRowHeight = 60,
-  }) {
-    HourMinute relative = time.subtract(minimumTime);
-    final totalMunutes = relative.hour * 60 + relative.minute;
-    return totalMunutes / unit.minute * unitRowHeight;
   }
 }
 
