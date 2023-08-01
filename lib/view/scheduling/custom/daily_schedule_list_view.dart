@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shrew_kit/component/schedule_unit.dart';
 import 'package:shrew_kit/main.dart';
 import 'package:shrew_kit/util/date_time_ext.dart';
-import 'package:shrew_kit/view/scheduling/custom/schedule_unit.dart';
 
 class DailyScheduleListView extends StatefulWidget {
   const DailyScheduleListView({super.key});

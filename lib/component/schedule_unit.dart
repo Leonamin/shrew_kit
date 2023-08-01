@@ -18,7 +18,7 @@ enum ScheduleUnit {
 }
 
 extension ScheduleUnitExt on ScheduleUnit {
-  int get value {
+  int get minute {
     switch (this) {
       case ScheduleUnit.min1:
         return 1;
