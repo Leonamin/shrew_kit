@@ -15,6 +15,7 @@ enum ShrewRoutes {
 
 enum SchedulingRoutes {
   custom,
+  calendarAlgorithm,
   flutterWeekView,
   tableCalendar,
   calendarView,
@@ -89,6 +90,8 @@ extension SchedulingRoutesExt on SchedulingRoutes {
       // all case
       case SchedulingRoutes.custom:
         return 'custom';
+      case SchedulingRoutes.calendarAlgorithm:
+        return 'calendar_algorithm';
       case SchedulingRoutes.flutterWeekView:
         return 'flutter_week_view';
       case SchedulingRoutes.tableCalendar:
@@ -105,6 +108,8 @@ extension SchedulingRoutesExt on SchedulingRoutes {
       // all case
       case SchedulingRoutes.custom:
         return 'custom';
+      case SchedulingRoutes.calendarAlgorithm:
+        return 'calendar_algorithm';
       case SchedulingRoutes.flutterWeekView:
         return 'flutter_week_view';
       case SchedulingRoutes.tableCalendar:

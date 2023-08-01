@@ -10,6 +10,7 @@ import 'package:shrew_kit/view/cube_transition/cube_shrew_view.dart';
 import 'package:shrew_kit/view/home/home_view.dart';
 import 'package:shrew_kit/view/jump_page/jump_page_view.dart';
 import 'package:shrew_kit/view/neo/neo_view.dart';
+import 'package:shrew_kit/view/scheduling/custom/calendar_algorithm_view.dart';
 import 'package:shrew_kit/view/scheduling/custom/custom_scheduling_view.dart';
 import 'package:shrew_kit/view/scheduling/libs/lib_calendar_day_view.dart';
 import 'package:shrew_kit/view/scheduling/libs/lib_calendar_view.dart';
@@ -92,6 +93,11 @@ final router = GoRouter(
               path: SchedulingRoutes.custom.path,
               name: SchedulingRoutes.custom.name,
               builder: (context, state) => const CustomSchedulingView(),
+            ),
+            GoRoute(
+              path: SchedulingRoutes.calendarAlgorithm.path,
+              name: SchedulingRoutes.calendarAlgorithm.name,
+              builder: (context, state) => const CalendarAlgorithmView(),
             ),
             GoRoute(
               path: SchedulingRoutes.calendarDayView.path,
