@@ -11,11 +11,13 @@ class DailyScheduleView extends StatefulWidget {
     required DateTime date,
     this.minimumTime = HourMinute.min,
     this.maximumTime = HourMinute.max,
+    this.onBackgroundTapped,
   }) : date = date.withStartTime();
   final DailyScheduleStyle style;
   final DateTime date;
   final HourMinute minimumTime;
   final HourMinute maximumTime;
+  final Function(DateTime)? onBackgroundTapped;
 
   @override
   State<DailyScheduleView> createState() => _DailyScheduleViewState();
@@ -36,10 +38,9 @@ class _DailyScheduleViewState extends State<DailyScheduleView> {
     Widget gesture = Positioned.fill(
         child: GestureDetector(
       onTapUp: (details) {
-        DateTime timeTapped = widget.date
-            .add(calculateOffsetToHourMinute(details.localPosition).asDuration);
-        print(timeTapped);
-        // TODO : 이벤트 호출 하기
+        DateTime timeTapped = widget.date.add(
+            calculateOffsetToHourMinute(details.localPosition.dy).asDuration);
+        widget.onBackgroundTapped?.call(timeTapped);
       },
       onLongPressStart: onPreviewStart,
       onLongPressMoveUpdate: onPreviewMoveUpdate,
@@ -82,12 +83,14 @@ class _DailyScheduleViewState extends State<DailyScheduleView> {
   // 호버링 관련
   void onPreviewStart(LongPressStartDetails details) {
     isDragging = true;
-    hoverPos = details.localPosition.dy;
+    hoverPos = clampToOffsetByHourMinute(
+        calculateOffsetToHourMinute(details.localPosition.dy));
     setState(() {});
   }
 
   void onPreviewMoveUpdate(LongPressMoveUpdateDetails details) {
-    hoverPos = details.localPosition.dy;
+    hoverPos = clampToOffsetByHourMinute(
+        calculateOffsetToHourMinute(details.localPosition.dy));
     setState(() {});
   }
 
@@ -117,10 +120,9 @@ class _DailyScheduleViewState extends State<DailyScheduleView> {
         unit: widget.style.unit,
       );
 
-  HourMinute calculateOffsetToHourMinute(Offset localOffset) {
+  HourMinute calculateOffsetToHourMinute(double posY) {
     double unitRowHeight = widget.style.unitRowHeight;
-    double calcMinute =
-        localOffset.dy * widget.style.unit.minute / unitRowHeight;
+    double calcMinute = posY * widget.style.unit.minute / unitRowHeight;
 
     if (calcMinute < 0) {
       return widget.minimumTime;
@@ -129,6 +131,19 @@ class _DailyScheduleViewState extends State<DailyScheduleView> {
     int hour = calcMinute ~/ 60;
     int minute = (calcMinute % 60).round();
     return widget.minimumTime.add(HourMinute(hour: hour, minute: minute));
+  }
+
+  double clampToOffsetByHourMinute(HourMinute time, [ScheduleUnit? unit]) {
+    final totalMinutes = time.hour * 60 + time.minute;
+    final unitMinutes = (unit ?? widget.style.unit).minute;
+
+    final clampMinutes = (totalMinutes / unitMinutes).floor() * unitMinutes;
+    final clampTime = HourMinute(
+      hour: clampMinutes ~/ 60,
+      minute: clampMinutes % 60,
+    );
+    return calculateTopOffset(clampTime,
+        unitRowHeight: widget.style.unitRowHeight);
   }
 
   // 전역 유틸
