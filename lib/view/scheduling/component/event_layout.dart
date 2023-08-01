@@ -25,6 +25,7 @@ class _EventLayoutState extends State<EventLayout> {
       events.add(CalendarEvent(
         'Event $i',
         _testDateTime[i],
+        // _testDateTime[i].add(const Duration(minutes: 59)),
         _testDateTime[i].add(const Duration(hours: 1)),
       ));
     }
@@ -84,13 +85,10 @@ class _EventLayoutState extends State<EventLayout> {
 
   void layoutEvents(List<CalendarEvent> events) {
     var columns = <List<CalendarEvent>>[];
+    events.sort(sortByStartOrEnd);
     DateTime? lastEventEnding;
-    for (var ev in events
-      ..sort((a, b) => a.start.compareTo(b.start) == 0
-          ? a.end.compareTo(b.end)
-          : a.start.compareTo(b.start))) {
-      if (ev.start
-          .isAfter(lastEventEnding ?? DateTime.fromMicrosecondsSinceEpoch(0))) {
+    for (var ev in events) {
+      if (isSameOrAfter(ev.start, lastEventEnding)) {
         packEvents(columns);
         columns.clear();
         lastEventEnding = null;
@@ -141,4 +139,15 @@ class _EventLayoutState extends State<EventLayout> {
     }
     return colSpan;
   }
+
+  int sortByStartOrEnd(CalendarEvent a, CalendarEvent b) {
+    var res = a.start.compareTo(b.start);
+    if (res == 0) {
+      res = a.end.compareTo(b.end);
+    }
+    return res;
+  }
+
+  bool isSameOrAfter(DateTime? a, DateTime? b) =>
+      a == null || b == null || a.isAfter(b) || a.isAtSameMomentAs(b);
 }
