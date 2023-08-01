@@ -26,7 +26,9 @@ class _LibCalendarDayViewState extends State<LibCalendarDayView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('calendar_day_view'),
+      ),
       body: OverFlowCalendarDayView<String>(
         events: [
           for (var i = 0; i < _testDateTime.length; i++)
@@ -45,10 +47,14 @@ class _LibCalendarDayViewState extends State<LibCalendarDayView> {
         showCurrentTimeLine: true,
         showMoreOnRowButton: true,
         overflowItemBuilder: (context, constraints, itemIndex, event) {
-          return Container(
-            constraints: constraints,
-            child: Card(
-              child: Text(event.value),
+          return Tooltip(
+            message:
+                '${event.value} - ${event.start.format(context)} - ${event.end?.format(context)}',
+            child: Container(
+              constraints: constraints,
+              child: Card(
+                child: Text(event.value),
+              ),
             ),
           );
         },
