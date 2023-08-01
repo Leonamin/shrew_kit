@@ -22,6 +22,9 @@ class DailyScheduleView extends StatefulWidget {
 }
 
 class _DailyScheduleViewState extends State<DailyScheduleView> {
+  bool isDragging = false;
+  double hoverPos = 0;
+
   @override
   Widget build(BuildContext context) {
     var mainWidget = createMainWidget();
@@ -38,19 +41,33 @@ class _DailyScheduleViewState extends State<DailyScheduleView> {
         print(timeTapped);
         // TODO : 이벤트 호출 하기
       },
+      onLongPressStart: onPreviewStart,
+      onLongPressMoveUpdate: onPreviewMoveUpdate,
+      onLongPressEnd: onPrivewEnd,
+      onLongPressCancel: onPreviewCancel,
       child: Container(
         color: Colors.transparent,
       ),
     ));
+
+    Widget previewEvnet = Positioned(
+      left: 0,
+      right: 0,
+      top: hoverPos,
+      child: EventTile(
+        height: widget.style.unitRowHeight,
+      ),
+    );
 
     Widget mainWidget = SizedBox(
       height: calculateHeight(),
       child: Stack(children: [
         // add Background
         // add Gesture
-        gesture
+        gesture,
         // add Events
         // add hovering event
+        if (isDragging) previewEvnet
       ]),
     );
 
@@ -60,6 +77,28 @@ class _DailyScheduleViewState extends State<DailyScheduleView> {
     );
 
     return mainWidget;
+  }
+
+  // 호버링 관련
+  void onPreviewStart(LongPressStartDetails details) {
+    isDragging = true;
+    hoverPos = details.localPosition.dy;
+    setState(() {});
+  }
+
+  void onPreviewMoveUpdate(LongPressMoveUpdateDetails details) {
+    hoverPos = details.localPosition.dy;
+    setState(() {});
+  }
+
+  void onPrivewEnd(LongPressEndDetails details) {
+    isDragging = false;
+    setState(() {});
+  }
+
+  void onPreviewCancel() {
+    isDragging = false;
+    setState(() {});
   }
 
   // 계산 관련
@@ -102,5 +141,31 @@ class _DailyScheduleViewState extends State<DailyScheduleView> {
     HourMinute relative = time.subtract(minimumTime);
     final totalMunutes = relative.hour * 60 + relative.minute;
     return totalMunutes / unit.minute * unitRowHeight;
+  }
+}
+
+class EventTile extends StatelessWidget {
+  const EventTile({super.key, required this.height});
+
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+      child: Padding(
+        padding: const EdgeInsets.all(1.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.blue.withOpacity(0.5),
+            border: Border.all(
+              color: Colors.blue,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(5),
+          ),
+        ),
+      ),
+    );
   }
 }
