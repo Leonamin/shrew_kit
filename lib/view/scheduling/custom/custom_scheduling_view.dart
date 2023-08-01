@@ -9,7 +9,9 @@ class CustomSchedulingView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: const DailyScheduleView(),
+      body: DailyScheduleView(
+        date: DateTime.now(),
+      ),
     );
   }
 }
