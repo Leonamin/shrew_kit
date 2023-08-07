@@ -1,7 +1,13 @@
+import 'dart:collection';
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
-import 'package:shrew_kit/component/schedul_calendar/builders.dart';
+import 'package:shrew_kit/component/schedul_calendar/event_grid.dart';
+import 'package:shrew_kit/component/schedul_calendar/schedule.dart';
+import 'package:shrew_kit/component/schedul_calendar/unit_column_style.dart';
+import 'package:shrew_kit/component/schedul_calendar/utils/builders.dart';
 import 'package:shrew_kit/component/schedul_calendar/daily_schedule_style.dart';
-import 'package:shrew_kit/component/schedul_calendar/hour_minute.dart';
+import 'package:shrew_kit/component/schedul_calendar/utils/hour_minute.dart';
 import 'package:shrew_kit/component/schedul_calendar/schedule_unit.dart';
 import 'package:shrew_kit/component/schedul_calendar/unit_column.dart';
 import 'package:shrew_kit/util/date_time_ext.dart';
@@ -9,25 +15,70 @@ import 'package:shrew_kit/util/date_time_ext.dart';
 class DailyScheduleView extends StatefulWidget {
   DailyScheduleView({
     super.key,
+    this.events = const [],
     this.style = const DailyScheduleStyle.defaultStyle(),
     required DateTime date,
     this.minimumTime = HourMinute.min,
     this.maximumTime = HourMinute.max,
     this.onBackgroundTapped,
-  }) : date = date.withStartTime();
+    this.unitColumnStyle = const UnitColumnStyle(),
+    this.isRTL = false,
+  })  : date = date.withStartTime(),
+        initialTime = DateTime.now(); // FIXME : 오늘 날짜 아닌 날짜 비교해서 넣어주자
+
+  final List<Schedule> events;
   final DailyScheduleStyle style;
   final DateTime date;
   final HourMinute minimumTime;
   final HourMinute maximumTime;
+  final DateTime initialTime;
   final Function(DateTime)? onBackgroundTapped;
+  final UnitColumnStyle unitColumnStyle;
+  final bool isRTL;
 
   @override
   State<DailyScheduleView> createState() => DailyScheduleViewState();
 }
 
 class DailyScheduleViewState extends State<DailyScheduleView> {
+  final ScrollController verticalScrollController = ScrollController();
+  final Map<Schedule, EventDrawProperties> eventsDrawProperties = HashMap();
+
+  /// The flutter week view events.
+  late List<Schedule> events;
+
   bool isDragging = false;
   double hoverPos = 0;
+
+  bool get shouldScrollToInitialTime =>
+      widget.minimumTime
+          .atDate(widget.initialTime)
+          .isBefore(widget.initialTime) &&
+      widget.maximumTime.atDate(widget.initialTime).isAfter(widget.initialTime);
+
+  @override
+  void initState() {
+    super.initState();
+    scheduleScrollToInitialTime();
+    reset();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        setState(createEventsDrawProperties);
+      }
+    });
+  }
+
+  @override
+  void didUpdateWidget(DailyScheduleView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.date != widget.date) {
+      scheduleScrollToInitialTime();
+    }
+
+    reset();
+    createEventsDrawProperties();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,11 +138,18 @@ class DailyScheduleViewState extends State<DailyScheduleView> {
     );
 
     mainWidget = SingleChildScrollView(
+      controller: verticalScrollController,
       physics: const BouncingScrollPhysics(),
       child: mainWidget,
     );
 
     return mainWidget;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    verticalScrollController.dispose();
   }
 
   Widget createBackground() => Positioned.fill(
@@ -167,6 +225,54 @@ class DailyScheduleViewState extends State<DailyScheduleView> {
     );
     return calculateTopOffset(clampTime,
         unitRowHeight: widget.style.unitRowHeight);
+  }
+
+  void scheduleScrollToInitialTime() {
+    if (shouldScrollToInitialTime) {
+      WidgetsBinding.instance
+          .addPostFrameCallback((_) => scrollToInitialTime());
+    }
+  }
+
+  void scrollToInitialTime() {
+    if (mounted && verticalScrollController.hasClients) {
+      double topOffset = calculateTopOffset(
+          HourMinute.fromDateTime(dateTime: widget.initialTime));
+      verticalScrollController.jumpTo(math.min(
+          topOffset, verticalScrollController.position.maxScrollExtent));
+    }
+  }
+
+  void reset() {
+    eventsDrawProperties.clear();
+    events = List.of(widget.events)..sort();
+  }
+
+  /// Creates the events draw properties and add them to the current list.
+  void createEventsDrawProperties() {
+    EventGrid eventsGrid = EventGrid();
+    for (Schedule event in List.of(events)) {
+      EventDrawProperties drawProperties = eventsDrawProperties[event] ??
+          EventDrawProperties(widget, event, widget.isRTL);
+      if (!drawProperties.shouldDraw) {
+        events.remove(event);
+        continue;
+      }
+
+      drawProperties.calculateTopAndHeight(calculateTopOffset);
+      if (drawProperties.left == null || drawProperties.width == null) {
+        eventsGrid.add(drawProperties);
+      }
+
+      eventsDrawProperties[event] = drawProperties;
+    }
+
+    if (eventsGrid.drawPropertiesList.isNotEmpty) {
+      double eventsColumnWidth =
+          (context.findRenderObject() as RenderBox).size.width -
+              widget.unitColumnStyle.width;
+      eventsGrid.processEvents(widget.unitColumnStyle.width, eventsColumnWidth);
+    }
   }
 }
 
