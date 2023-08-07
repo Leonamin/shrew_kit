@@ -20,9 +20,10 @@ class DailyScheduleView extends StatefulWidget {
     required DateTime date,
     this.minimumTime = HourMinute.min,
     this.maximumTime = HourMinute.max,
-    this.onBackgroundTapped,
     this.unitColumnStyle = const UnitColumnStyle(),
     this.isRTL = false,
+    this.onBackgroundTapped,
+    this.onPreviewCalled,
   })  : date = date.withStartTime(),
         initialTime = DateTime.now(); // FIXME : 오늘 날짜 아닌 날짜 비교해서 넣어주자
 
@@ -32,9 +33,11 @@ class DailyScheduleView extends StatefulWidget {
   final HourMinute minimumTime;
   final HourMinute maximumTime;
   final DateTime initialTime;
-  final Function(DateTime)? onBackgroundTapped;
   final UnitColumnStyle unitColumnStyle;
   final bool isRTL;
+
+  final Function(DateTime)? onBackgroundTapped;
+  final Function(DateTime)? onPreviewCalled;
 
   @override
   State<DailyScheduleView> createState() => DailyScheduleViewState();
@@ -177,7 +180,10 @@ class DailyScheduleViewState extends State<DailyScheduleView> {
 
   void onPrivewEnd(LongPressEndDetails details) {
     isDragging = false;
-    setState(() {});
+    final hourMinute = calculateOffsetToHourMinute(hoverPos);
+    final dt = widget.date
+        .of(hour: hourMinute.hour, minute: hourMinute.minute, second: 0);
+    widget.onPreviewCalled?.call(dt);
   }
 
   void onPreviewCancel() {
