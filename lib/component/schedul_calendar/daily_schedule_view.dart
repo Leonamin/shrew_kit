@@ -126,6 +126,14 @@ class DailyScheduleViewState extends State<DailyScheduleView> {
       ),
     );
 
+    children.addAll(
+        eventsDrawProperties.entries.map((entry) => entry.value.createWidget(
+              context,
+              widget,
+              null,
+              entry.key,
+            )));
+
     Widget mainWidget = SizedBox(
       height: calculateHeight(),
       child: Stack(children: [
