@@ -39,11 +39,13 @@ class _AddScheduleViewState extends State<AddScheduleView> {
               final selectedTime = await showTimePicker(
                   context: context, initialTime: TimeOfDay.now());
               if (selectedTime != null) {
-                dtStart = DateTime.now().of(
-                  hour: selectedTime.hour,
-                  minute: selectedTime.minute,
-                  second: 0,
-                );
+                setState(() {
+                  dtStart = DateTime.now().of(
+                    hour: selectedTime.hour,
+                    minute: selectedTime.minute,
+                    second: 0,
+                  );
+                });
               }
             },
             child: Text('시작 시간 : ${dtStart.toHM()}'))));
@@ -53,11 +55,13 @@ class _AddScheduleViewState extends State<AddScheduleView> {
               final selectedTime = await showTimePicker(
                   context: context, initialTime: TimeOfDay.now());
               if (selectedTime != null) {
-                dtEnd = DateTime.now().of(
-                  hour: selectedTime.hour,
-                  minute: selectedTime.minute,
-                  second: 0,
-                );
+                setState(() {
+                  dtEnd = DateTime.now().of(
+                    hour: selectedTime.hour,
+                    minute: selectedTime.minute,
+                    second: 0,
+                  );
+                });
               }
             },
             child: Text('종료 시간 : ${dtEnd.toHM()}'))));
