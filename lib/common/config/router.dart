@@ -96,9 +96,12 @@ final router = GoRouter(
                 builder: (context, state) => const CustomSchedulingView(),
                 routes: [
                   GoRoute(
-                    path: '${CustomScheduleChildRoutes.addSchedule.path}',
+                    path: CustomScheduleChildRoutes.addSchedule.path,
                     name: CustomScheduleChildRoutes.addSchedule.name,
-                    builder: (context, state) => AddScheduleView(),
+                    builder: (context, state) => AddScheduleView(
+                      dtStart: (state.extra! as Map)['dtStart'],
+                      dtEnd: (state.extra! as Map)['dtEnd'],
+                    ),
                   ),
                 ]),
             GoRoute(
