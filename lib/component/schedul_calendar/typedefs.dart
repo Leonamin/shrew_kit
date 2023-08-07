@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shrew_kit/component/schedul_calendar/daily_schedule_style.dart';
+import 'package:shrew_kit/component/schedul_calendar/daily_schedule_view.dart';
+import 'package:shrew_kit/component/schedul_calendar/schedule.dart';
 import 'package:shrew_kit/component/schedul_calendar/utils/hour_minute.dart';
 import 'package:shrew_kit/component/schedul_calendar/unit_column_style.dart';
 
@@ -27,3 +29,11 @@ typedef UnitColumnTimeBuilder = Widget? Function(
 typedef UnitColumnBackgroundBuilder = Decoration? Function(HourMinute time);
 
 typedef HoverEndCallback = Function(DateTime date);
+
+typedef EventBuilder = Function(
+  BuildContext context,
+  Schedule schedule,
+  DailyScheduleView dayView,
+  double height,
+  double width,
+);

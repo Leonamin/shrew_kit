@@ -51,31 +51,14 @@ class Schedule<T> extends Comparable<Schedule> {
     height = height - (padding?.top ?? 0.0) - (padding?.bottom ?? 0.0);
     width = width - (padding?.left ?? 0.0) - (padding?.right ?? 0.0);
 
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        onLongPress: onLongPress,
-        child: Ink(
-          decoration: decoration ??
-              (backgroundColor != null
-                  ? BoxDecoration(color: backgroundColor)
-                  : null),
-          child: Container(
-            margin: margin,
-            padding: padding,
-            child: eventTextBuilder?.call(
-                  this,
-                  context,
-                  dayView,
-                  math.max(0.0, height),
-                  math.max(0.0, width),
-                ) ??
-                Container(),
-          ),
-        ),
-      ),
-    );
+    return dayView.eventBuilder?.call(
+          context,
+          this,
+          dayView,
+          math.max(0.0, height),
+          math.max(0.0, width),
+        ) ??
+        Container();
   }
 
   /// Shifts the start and end times, so that the event's duration is unaltered

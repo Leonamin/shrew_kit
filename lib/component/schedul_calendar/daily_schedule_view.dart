@@ -35,6 +35,7 @@ class DailyScheduleView extends StatefulWidget {
     this.onBackgroundTapped,
     this.currentTimeIndicatorBuilder,
     this.onHoverEnd,
+    this.eventBuilder,
   })  : date = date.withStartTime(),
         initialTime = DateTime.now(); // FIXME : 오늘 날짜 아닌 날짜 비교해서 넣어주자
 
@@ -54,6 +55,7 @@ class DailyScheduleView extends StatefulWidget {
   final BackgroundTapCallback? onBackgroundTapped;
   final CurrentTimeIndicatorBuilder? currentTimeIndicatorBuilder;
   final HoverEndCallback? onHoverEnd;
+  final EventBuilder? eventBuilder;
 
   @override
   State<DailyScheduleView> createState() => DailyScheduleViewState();

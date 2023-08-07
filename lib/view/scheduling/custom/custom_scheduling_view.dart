@@ -32,6 +32,29 @@ class _CustomSchedulingViewState extends State<CustomSchedulingView> {
         events: scheduleList,
         date: DateTime.now(),
         onHoverEnd: onPreviewCalled,
+        eventBuilder: (context, scechdule, dayView, height, width) {
+          // TODO : 렌더링 에러 확인해야함
+          return SizedBox(
+            height: height,
+            width: width,
+            child: Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Center(
+                  child: Text(
+                    scechdule.title,
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimary),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
