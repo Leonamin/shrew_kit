@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shrew_kit/component/schedule_unit.dart';
+import 'package:shrew_kit/component/schedul_calendar/schedule_unit.dart';
 import 'package:shrew_kit/main.dart';
 import 'package:shrew_kit/util/date_time_ext.dart';
 
