@@ -31,7 +31,7 @@ class _CustomSchedulingViewState extends State<CustomSchedulingView> {
       body: DailyScheduleView(
         events: scheduleList,
         date: DateTime.now(),
-        onPreviewCalled: onPreviewCalled,
+        onHoverEnd: onPreviewCalled,
       ),
     );
   }

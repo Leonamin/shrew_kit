@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:shrew_kit/component/schedul_calendar/event_grid.dart';
 import 'package:shrew_kit/component/schedul_calendar/schedule.dart';
+import 'package:shrew_kit/component/schedul_calendar/typedefs.dart';
 import 'package:shrew_kit/component/schedul_calendar/unit_column_style.dart';
 import 'package:shrew_kit/component/schedul_calendar/utils/builders.dart';
 import 'package:shrew_kit/component/schedul_calendar/daily_schedule_style.dart';
@@ -11,6 +12,11 @@ import 'package:shrew_kit/component/schedul_calendar/utils/hour_minute.dart';
 import 'package:shrew_kit/component/schedul_calendar/schedule_unit.dart';
 import 'package:shrew_kit/component/schedul_calendar/unit_column.dart';
 import 'package:shrew_kit/util/date_time_ext.dart';
+
+enum HoverStartEvent {
+  tap,
+  longTap,
+}
 
 class DailyScheduleView extends StatefulWidget {
   DailyScheduleView({
@@ -22,8 +28,13 @@ class DailyScheduleView extends StatefulWidget {
     this.maximumTime = HourMinute.max,
     this.unitColumnStyle = const UnitColumnStyle(),
     this.isRTL = false,
+    this.hoverStartEvent = HoverStartEvent.longTap, // TODO : 관련 기능은 나중에
+    this.unitColumnTimeBuilder,
+    this.unitColumnBackgroundBuilder,
+    this.unitColumnTapCallback,
     this.onBackgroundTapped,
-    this.onPreviewCalled,
+    this.currentTimeIndicatorBuilder,
+    this.onHoverEnd,
   })  : date = date.withStartTime(),
         initialTime = DateTime.now(); // FIXME : 오늘 날짜 아닌 날짜 비교해서 넣어주자
 
@@ -35,9 +46,14 @@ class DailyScheduleView extends StatefulWidget {
   final DateTime initialTime;
   final UnitColumnStyle unitColumnStyle;
   final bool isRTL;
+  final HoverStartEvent hoverStartEvent;
 
-  final Function(DateTime)? onBackgroundTapped;
-  final Function(DateTime)? onPreviewCalled;
+  final UnitColumnTimeBuilder? unitColumnTimeBuilder;
+  final UnitColumnBackgroundBuilder? unitColumnBackgroundBuilder;
+  final UnitColumnTapCallback? unitColumnTapCallback;
+  final BackgroundTapCallback? onBackgroundTapped;
+  final CurrentTimeIndicatorBuilder? currentTimeIndicatorBuilder;
+  final HoverEndCallback? onHoverEnd;
 
   @override
   State<DailyScheduleView> createState() => DailyScheduleViewState();
@@ -191,7 +207,7 @@ class DailyScheduleViewState extends State<DailyScheduleView> {
     final hourMinute = calculateOffsetToHourMinute(hoverPos);
     final dt = widget.date
         .of(hour: hourMinute.hour, minute: hourMinute.minute, second: 0);
-    widget.onPreviewCalled?.call(dt);
+    widget.onHoverEnd?.call(dt);
   }
 
   void onPreviewCancel() {
