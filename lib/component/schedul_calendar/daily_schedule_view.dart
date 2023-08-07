@@ -110,7 +110,7 @@ class DailyScheduleViewState extends State<DailyScheduleView> {
     ));
 
     Widget previewEvnet = Positioned(
-      left: 0,
+      left: widget.unitColumnStyle.width,
       right: 0,
       top: hoverPos,
       child: EventTile(
