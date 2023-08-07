@@ -121,3 +121,23 @@ extension SchedulingRoutesExt on SchedulingRoutes {
     }
   }
 }
+
+enum CustomScheduleChildRoutes {
+  addSchedule,
+}
+
+extension CustomScheduleChildRoutesExt on CustomScheduleChildRoutes {
+  String get path {
+    switch (this) {
+      case CustomScheduleChildRoutes.addSchedule:
+        return 'add_schedule';
+    }
+  }
+
+  String get name {
+    switch (this) {
+      case CustomScheduleChildRoutes.addSchedule:
+        return 'add_schedule';
+    }
+  }
+}
