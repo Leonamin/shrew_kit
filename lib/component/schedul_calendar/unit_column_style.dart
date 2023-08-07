@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shrew_kit/component/builders.dart';
-import 'package:shrew_kit/component/typedefs.dart';
+import 'package:shrew_kit/component/schedul_calendar/builders.dart';
+import 'package:shrew_kit/component/schedul_calendar/typedefs.dart';
 
 /// Allows to configure the hours column style.
 class UnitColumnStyle {

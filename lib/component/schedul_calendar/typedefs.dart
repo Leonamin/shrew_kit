@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shrew_kit/component/daily_schedule_style.dart';
-import 'package:shrew_kit/component/hour_minute.dart';
-import 'package:shrew_kit/component/unit_column_style.dart';
+import 'package:shrew_kit/component/schedul_calendar/daily_schedule_style.dart';
+import 'package:shrew_kit/component/schedul_calendar/hour_minute.dart';
+import 'package:shrew_kit/component/schedul_calendar/unit_column_style.dart';
 
 typedef DateFormatter = String Function(int year, int month, int day);
 

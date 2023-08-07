@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shrew_kit/component/daily_schedule_view.dart';
-import 'package:shrew_kit/component/hour_minute.dart';
-import 'package:shrew_kit/component/schedule_unit.dart';
-import 'package:shrew_kit/component/typedefs.dart';
-import 'package:shrew_kit/component/unit_column.dart';
+import 'package:shrew_kit/component/schedul_calendar/daily_schedule_view.dart';
+import 'package:shrew_kit/component/schedul_calendar/hour_minute.dart';
+import 'package:shrew_kit/component/schedul_calendar/schedule_unit.dart';
+import 'package:shrew_kit/component/schedul_calendar/typedefs.dart';
+import 'package:shrew_kit/component/schedul_calendar/unit_column.dart';
 
 class DailyScheduleStyle {
   final ScheduleUnit unit;

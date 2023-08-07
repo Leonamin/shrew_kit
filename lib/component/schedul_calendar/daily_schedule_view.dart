@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shrew_kit/component/builders.dart';
-import 'package:shrew_kit/component/daily_schedule_style.dart';
-import 'package:shrew_kit/component/hour_minute.dart';
-import 'package:shrew_kit/component/schedule_unit.dart';
+import 'package:shrew_kit/component/schedul_calendar/builders.dart';
+import 'package:shrew_kit/component/schedul_calendar/daily_schedule_style.dart';
+import 'package:shrew_kit/component/schedul_calendar/hour_minute.dart';
+import 'package:shrew_kit/component/schedul_calendar/schedule_unit.dart';
+import 'package:shrew_kit/component/schedul_calendar/unit_column.dart';
 import 'package:shrew_kit/util/date_time_ext.dart';
 
 class DailyScheduleView extends StatefulWidget {
@@ -21,10 +22,10 @@ class DailyScheduleView extends StatefulWidget {
   final Function(DateTime)? onBackgroundTapped;
 
   @override
-  State<DailyScheduleView> createState() => _DailyScheduleViewState();
+  State<DailyScheduleView> createState() => DailyScheduleViewState();
 }
 
-class _DailyScheduleViewState extends State<DailyScheduleView> {
+class DailyScheduleViewState extends State<DailyScheduleView> {
   bool isDragging = false;
   double hoverPos = 0;
 
@@ -36,6 +37,8 @@ class _DailyScheduleViewState extends State<DailyScheduleView> {
 
   // 위젯 관련
   Widget createMainWidget() {
+    List<Widget> children = [];
+
     Widget gesture = Positioned.fill(
         child: GestureDetector(
       onTapUp: (details) {
@@ -61,11 +64,20 @@ class _DailyScheduleViewState extends State<DailyScheduleView> {
       ),
     );
 
+    children.add(
+      Positioned(
+        top: 0,
+        left: 0,
+        child: UnitColumn.fromHeadersWidgetState(parent: this),
+      ),
+    );
+
     Widget mainWidget = SizedBox(
       height: calculateHeight(),
       child: Stack(children: [
-        // add Background
         createBackground(),
+        ...children,
+        // add Background
         // add Gesture
         gesture,
         // add Events

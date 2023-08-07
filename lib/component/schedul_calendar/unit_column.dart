@@ -1,36 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:shrew_kit/component/builders.dart';
-import 'package:shrew_kit/component/hour_minute.dart';
-import 'package:shrew_kit/component/typedefs.dart';
-import 'package:shrew_kit/component/unit_column_style.dart';
+import 'package:shrew_kit/component/schedul_calendar/builders.dart';
+import 'package:shrew_kit/component/schedul_calendar/daily_schedule_view.dart';
+import 'package:shrew_kit/component/schedul_calendar/hour_minute.dart';
+import 'package:shrew_kit/component/schedul_calendar/typedefs.dart';
+import 'package:shrew_kit/component/schedul_calendar/unit_column_style.dart';
 
 /// A column which is showing a day hours.
+/// Unit 단위로 보여질 컬럼 위젯
 class UnitColumn extends StatelessWidget {
-  /// The minimum time to display.
   final HourMinute minimumTime;
-
-  /// The maximum time to display.
   final HourMinute maximumTime;
 
-  /// The top offset calculator.
   final TopOffsetCalculator topOffsetCalculator;
 
-  /// The widget style.
   final UnitColumnStyle style;
-
-  /// Triggered when the hours column has been tapped down.
   final UnitColumnTapCallback? onUnitColumnTappedDown;
-
-  /// The times to display on the side border.
   final List<HourMinute> _sideTimes;
-
-  /// Building method for building the time displayed on the side border.
   final UnitColumnTimeBuilder unitColumnTimeBuilder;
-
-  /// Building method for building background decoration below single time displayed on the side border.
   final UnitColumnBackgroundBuilder? unitColumnBackgroundBuilder;
 
-  /// Creates a new hours column instance.
   UnitColumn({
     super.key,
     this.minimumTime = HourMinute.min,
@@ -46,6 +34,22 @@ class UnitColumn extends StatelessWidget {
         unitColumnTimeBuilder = unitColumnTimeBuilder ??
             DefaultBuilders.defaultUnitColumnTimeBuilder,
         _sideTimes = getSideTimes(minimumTime, maximumTime, style.interval);
+
+  /// 시간 표시용 헤더
+  UnitColumn.fromHeadersWidgetState({
+    Key? key,
+    required DailyScheduleViewState parent,
+  }) : this(
+          key: key,
+          minimumTime: parent.widget.minimumTime,
+          maximumTime: parent.widget.maximumTime,
+          topOffsetCalculator: parent.calculateTopOffset,
+          // style: parent.widget.hoursColumnStyle,
+          // onHoursColumnTappedDown: parent.widget.onHoursColumnTappedDown,
+          // hoursColumnTimeBuilder: parent.widget.hoursColumnTimeBuilder,
+          // hoursColumnBackgroundBuilder:
+          // parent.widget.hoursColumnBackgroundBuilder,
+        );
 
   @override
   Widget build(BuildContext context) {
@@ -123,6 +127,7 @@ class UnitColumn extends StatelessWidget {
     List<HourMinute> sideTimes = [];
     HourMinute currentTime =
         minimumTime.add(HourMinute.fromDuration(duration: interval));
+    // HourMinute currentTime = minimumTime;
     while (currentTime < maximumTime) {
       sideTimes.add(currentTime);
       currentTime =
