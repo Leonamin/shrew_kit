@@ -36,6 +36,7 @@ class DailyScheduleView extends StatefulWidget {
     this.currentTimeIndicatorBuilder,
     this.onHoverEnd,
     this.eventBuilder,
+    this.previewBuilder,
   })  : date = date.withStartTime(),
         initialTime = DateTime.now(); // FIXME : 오늘 날짜 아닌 날짜 비교해서 넣어주자
 
@@ -56,6 +57,7 @@ class DailyScheduleView extends StatefulWidget {
   final CurrentTimeIndicatorBuilder? currentTimeIndicatorBuilder;
   final HoverEndCallback? onHoverEnd;
   final EventBuilder? eventBuilder;
+  final PreviewBuilder? previewBuilder;
 
   @override
   State<DailyScheduleView> createState() => DailyScheduleViewState();
@@ -127,13 +129,22 @@ class DailyScheduleViewState extends State<DailyScheduleView> {
       ),
     ));
 
+    final previewStart = calculateOffsetToHourMinute(hoverPos).toDateTime();
+    final previewEnd = previewStart.add(widget.style.unit.duration);
+
     Widget previewEvnet = Positioned(
       left: widget.unitColumnStyle.width,
       right: 0,
       top: hoverPos,
-      child: EventTile(
-        height: widget.style.unitRowHeight,
-      ),
+      child: widget.previewBuilder?.call(
+            context,
+            widget.style.unitRowHeight, // TODO : 미리보기 단위 추가
+            previewStart,
+            previewEnd,
+          ) ??
+          EventTile(
+            height: widget.style.unitRowHeight,
+          ),
     );
 
     children.add(

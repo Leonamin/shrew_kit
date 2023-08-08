@@ -37,3 +37,10 @@ typedef EventBuilder = Function(
   double height,
   double width,
 );
+
+typedef PreviewBuilder = Function(
+  BuildContext context,
+  double height,
+  DateTime start,
+  DateTime end,
+);

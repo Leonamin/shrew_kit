@@ -55,6 +55,13 @@ class _CustomSchedulingViewState extends State<CustomSchedulingView> {
             ),
           );
         },
+        previewBuilder: (context, height, start, end) {
+          return _PreviewWidget(
+            maxHeight: height,
+            start: start,
+            end: end,
+          );
+        },
       ),
     );
   }
@@ -75,5 +82,59 @@ class _CustomSchedulingViewState extends State<CustomSchedulingView> {
         title: form.title, description: '', start: form.start, end: form.end);
     scheduleList.add(schedule);
     setState(() {});
+  }
+}
+
+class _PreviewWidget extends StatelessWidget {
+  const _PreviewWidget({
+    super.key,
+    required this.maxHeight,
+    required this.start,
+    required this.end,
+  });
+
+  final double maxHeight;
+  final DateTime start;
+  final DateTime? end;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: maxHeight,
+      child: Padding(
+        padding: const EdgeInsets.all(1.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.secondary,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Center(
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: start.toHM(),
+                  ),
+                  if (end != null) ...[
+                    const TextSpan(text: ' '),
+                    WidgetSpan(
+                      child: Icon(
+                        Icons.arrow_right_rounded,
+                        color: Theme.of(context).colorScheme.onSecondary,
+                      ),
+                    ),
+                    const TextSpan(text: ' '),
+                    TextSpan(text: end!.toHM()),
+                  ]
+                ],
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSecondary,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
