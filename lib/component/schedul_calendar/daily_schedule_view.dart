@@ -167,10 +167,10 @@ class DailyScheduleViewState extends State<DailyScheduleView> {
       height: calculateHeight(),
       child: Stack(children: [
         createBackground(),
-        ...children,
         // add Background
         // add Gesture
         gesture,
+        ...children,
         // add Events
         // add hovering event
         if (isDragging) previewEvnet

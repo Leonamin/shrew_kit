@@ -32,27 +32,11 @@ class _CustomSchedulingViewState extends State<CustomSchedulingView> {
         events: scheduleList,
         date: DateTime.now(),
         onHoverEnd: onPreviewCalled,
-        eventBuilder: (context, scechdule, dayView, height, width) {
-          // TODO : 렌더링 에러 확인해야함
-          return SizedBox(
+        eventBuilder: (context, schedule, dayView, height, width) {
+          return _EventWidget(
             height: height,
             width: width,
-            child: Padding(
-              padding: const EdgeInsets.all(1.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Center(
-                  child: Text(
-                    scechdule.title,
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimary),
-                  ),
-                ),
-              ),
-            ),
+            schedule: schedule,
           );
         },
         previewBuilder: (context, height, start, end) {
@@ -85,6 +69,47 @@ class _CustomSchedulingViewState extends State<CustomSchedulingView> {
   }
 }
 
+class _EventWidget extends StatelessWidget {
+  const _EventWidget({
+    super.key,
+    required this.schedule,
+    required this.height,
+    required this.width,
+  });
+
+  final Schedule schedule;
+  final double height;
+  final double width;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+      width: width,
+      child: Padding(
+        padding: const EdgeInsets.all(1.0).copyWith(bottom: 2),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.inversePrimary,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: InkWell(
+            onTap: () {},
+            splashColor: Colors.black,
+            child: Center(
+              child: Text(
+                schedule.title,
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _PreviewWidget extends StatelessWidget {
   const _PreviewWidget({
     super.key,
@@ -105,7 +130,7 @@ class _PreviewWidget extends StatelessWidget {
         padding: const EdgeInsets.all(1.0),
         child: Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).colorScheme.tertiary,
             borderRadius: BorderRadius.circular(4),
           ),
           child: Center(
@@ -120,7 +145,7 @@ class _PreviewWidget extends StatelessWidget {
                     WidgetSpan(
                       child: Icon(
                         Icons.arrow_right_rounded,
-                        color: Theme.of(context).colorScheme.onSecondary,
+                        color: Theme.of(context).colorScheme.onTertiary,
                       ),
                     ),
                     const TextSpan(text: ' '),
@@ -128,7 +153,7 @@ class _PreviewWidget extends StatelessWidget {
                   ]
                 ],
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSecondary,
+                  color: Theme.of(context).colorScheme.onTertiary,
                 ),
               ),
             ),
