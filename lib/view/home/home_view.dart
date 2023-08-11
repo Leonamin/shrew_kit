@@ -13,6 +13,7 @@ const List<ShrewRoutes> homeNestedRoutes = [
   ShrewRoutes.testSlider,
   ShrewRoutes.colorChart,
   ShrewRoutes.scheduling,
+  ShrewRoutes.expandableFab,
 ];
 
 class HomeView extends StatelessWidget {

@@ -11,6 +11,7 @@ enum ShrewRoutes {
   testSlider,
   colorChart,
   scheduling,
+  expandableFab,
 }
 
 enum SchedulingRoutes {
@@ -50,6 +51,8 @@ extension ShrewRoutesExt on ShrewRoutes {
         return 'color_chart';
       case ShrewRoutes.scheduling:
         return 'scheduling';
+      case ShrewRoutes.expandableFab:
+        return 'expandable_fab';
     }
   }
 
@@ -80,6 +83,8 @@ extension ShrewRoutesExt on ShrewRoutes {
         return 'color_chart';
       case ShrewRoutes.scheduling:
         return 'scheduling';
+      case ShrewRoutes.expandableFab:
+        return 'expandable_fab';
     }
   }
 }
