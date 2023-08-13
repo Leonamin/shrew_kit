@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:animated_size_and_fade/animated_size_and_fade.dart';
 import 'package:flutter/material.dart';
 import 'package:shrew_kit/view/anime/component/animated_button.dart';
 import 'package:shrew_kit/view/anime/component/speed_dial_fab.dart';
@@ -34,17 +33,14 @@ class ExpandableFabViewState extends State<ExpandableFabView>
       body: Column(
         children: [
           Builder(builder: (context) {
-            print('나 빌드 되고 있어!');
             return AnimatedToggleButton(
               on: isOpen,
-              child: isOpen ? _buildCloseFab() : _buildOpenFab(),
             );
           })
         ],
       ),
       floatingActionButton: SpeedDialFAB(
         controller: _animationController,
-        // primaryChild: _buildFAB(),
         primaryChild: GestureDetector(
           onTap: () {
             setState(() {
@@ -54,7 +50,16 @@ class ExpandableFabViewState extends State<ExpandableFabView>
           child: AnimatedToggleButton(
             key: ValueKey('primary'),
             on: isOpen,
-            child: isOpen ? _buildCloseFab() : _buildOpenFab(),
+            openColor: Theme.of(context).colorScheme.primary,
+            openIconColor: Theme.of(context).colorScheme.onPrimary,
+            closeColor: Color(0xFFF5F5F5),
+            openLabel: '기록하기',
+            openPadding: EdgeInsets.symmetric(horizontal: 10),
+            openLabelStyle: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
           ),
         ),
         open: isOpen,
@@ -65,53 +70,6 @@ class ExpandableFabViewState extends State<ExpandableFabView>
           _buildChildFAB(),
           _buildChildFAB(),
         ],
-      ),
-    );
-  }
-
-  _buildFAB() {
-    return AnimatedSizeAndFade(
-        child: isOpen ? _buildCloseFab() : _buildOpenFab());
-  }
-
-  _buildOpenFab() {
-    return Container(
-      decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-      child: InkWell(
-        onTap: () {
-          setState(() {
-            isOpen = !isOpen;
-          });
-        },
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [Icon(Icons.add), Text('기록하기')],
-        ),
-      ),
-    );
-  }
-
-  _buildCloseFab() {
-    return Container(
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(100),
-        child: Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.white,
-          ),
-          child: InkWell(
-            onTap: () {
-              setState(() {
-                isOpen = !isOpen;
-              });
-            },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [Icon(Icons.close)],
-            ),
-          ),
-        ),
       ),
     );
   }
