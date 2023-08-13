@@ -183,9 +183,15 @@ class _AnimatedToggleButtonState extends State<AnimatedToggleButton> {
                       color: widget.openIconColor,
                     ),
                     if (widget.openLabel != null)
-                      Text(
-                        widget.openLabel!,
-                        style: openLabelStyle,
+                      Flexible(
+                        child: ClipRect(
+                          child: Text(
+                            widget.openLabel!,
+                            style: openLabelStyle,
+                            maxLines: 1,
+                            overflow: TextOverflow.clip,
+                          ),
+                        ),
                       ),
                   ],
                 ),
@@ -206,10 +212,14 @@ class _AnimatedToggleButtonState extends State<AnimatedToggleButton> {
                       color: widget.closeIconColor,
                     ),
                     if (widget.closeLabel != null)
-                      ClipRect(
-                        child: Text(
-                          widget.closeLabel!,
-                          style: closeLabelStyle,
+                      Flexible(
+                        child: ClipRect(
+                          child: Text(
+                            widget.closeLabel!,
+                            style: closeLabelStyle,
+                            maxLines: 1,
+                            overflow: TextOverflow.clip,
+                          ),
                         ),
                       ),
                   ],
