@@ -168,64 +168,26 @@ class _AnimatedToggleButtonState extends State<AnimatedToggleButton> {
       child: Center(
         child: Stack(
           children: [
-            Positioned.fill(
-              child: AnimatedOpacity(
-                opacity: openOpacity,
-                duration: widget.duration,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(
-                      widget.openIcon,
-                      size: widget.iconSize,
-                      color: widget.openIconColor,
-                    ),
-                    if (widget.openLabel != null)
-                      Flexible(
-                        child: ClipRect(
-                          child: Text(
-                            widget.openLabel!,
-                            style: openLabelStyle,
-                            maxLines: 1,
-                            overflow: TextOverflow.clip,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
+            _ChildButton(
+              key: UniqueKey(),
+              opacity: openOpacity,
+              duration: widget.duration,
+              iconData: widget.openIcon,
+              iconSize: widget.iconSize,
+              iconColor: widget.openIconColor,
+              label: widget.openLabel,
+              labelStyle: openLabelStyle,
             ),
-            Positioned.fill(
-              child: AnimatedOpacity(
-                opacity: closeOpacity,
-                duration: widget.duration,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(
-                      widget.closeIcon,
-                      size: widget.iconSize,
-                      color: widget.closeIconColor,
-                    ),
-                    if (widget.closeLabel != null)
-                      Flexible(
-                        child: ClipRect(
-                          child: Text(
-                            widget.closeLabel!,
-                            style: closeLabelStyle,
-                            maxLines: 1,
-                            overflow: TextOverflow.clip,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-            )
+            _ChildButton(
+              key: UniqueKey(),
+              opacity: closeOpacity,
+              duration: widget.duration,
+              iconData: widget.closeIcon,
+              iconSize: widget.iconSize,
+              iconColor: widget.closeIconColor,
+              label: widget.closeLabel,
+              labelStyle: closeLabelStyle,
+            ),
           ],
         ),
       ),
@@ -233,6 +195,56 @@ class _AnimatedToggleButtonState extends State<AnimatedToggleButton> {
   }
 }
 
-extension EdgeInsetsExt on EdgeInsets {
-  // double get width => this.horizontal
+class _ChildButton extends StatelessWidget {
+  const _ChildButton({
+    super.key,
+    required this.opacity,
+    required this.duration,
+    required this.iconData,
+    this.iconColor,
+    required this.iconSize,
+    required this.label,
+    required this.labelStyle,
+  });
+
+  final double opacity;
+  final Duration duration;
+  final IconData iconData;
+  final double iconSize;
+  final Color? iconColor;
+  final String? label;
+  final TextStyle labelStyle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned.fill(
+      child: AnimatedOpacity(
+        opacity: opacity,
+        duration: duration,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              iconData,
+              size: iconSize,
+              color: iconColor,
+            ),
+            if (label != null)
+              Flexible(
+                child: ClipRect(
+                  child: Text(
+                    label!,
+                    style: labelStyle,
+                    maxLines: 1,
+                    overflow: TextOverflow.clip,
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
 }
