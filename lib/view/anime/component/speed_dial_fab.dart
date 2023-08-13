@@ -98,7 +98,12 @@ class _SpeedDialFABState extends State<SpeedDialFAB>
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         if (!_animationController.isDismissed) ..._buildChildrenWidgets(),
-        _buildPrimaryWidget()
+        // _buildPrimaryWidget()
+        Padding(
+          key: ValueKey('primaryPadding'),
+          padding: widget.primaryPadding ?? const EdgeInsets.only(right: 4),
+          child: widget.primaryChild,
+        ),
       ],
     );
   }
@@ -132,6 +137,7 @@ class _SpeedDialFABState extends State<SpeedDialFAB>
   }
 
   Widget _buildPrimaryWidget() {
+    print('프라이머리 빌드!');
     return Padding(
       padding: widget.primaryPadding ?? const EdgeInsets.only(right: 4),
       child: widget.primaryChild,
