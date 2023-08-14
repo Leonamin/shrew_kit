@@ -30,6 +30,7 @@ class ExpandableFabViewState extends State<ExpandableFabView>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           Builder(builder: (context) {
@@ -52,12 +53,9 @@ class ExpandableFabViewState extends State<ExpandableFabView>
             fontWeight: FontWeight.w500,
             color: Theme.of(context).colorScheme.onPrimary,
           ),
-          closeColor: Color(0xFFF5F5F5),
-          onTap: () {
-            setState(() {
-              isOpen = !isOpen;
-            });
-          },
+          closeColor: Colors.white,
+          closeBorderColor: Theme.of(context).colorScheme.primary,
+          onTap: onTapPrimary,
         ),
         open: isOpen,
         children: [
@@ -68,7 +66,8 @@ class ExpandableFabViewState extends State<ExpandableFabView>
             width: 130,
             height: 56,
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            color: Color(0xFFF5F5F5),
+            color: Colors.white,
+            borderColor: Theme.of(context).colorScheme.primary,
           ),
           _CategoryButton(
             onTap: onTapChild,
@@ -77,11 +76,18 @@ class ExpandableFabViewState extends State<ExpandableFabView>
             width: 130,
             height: 56,
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            color: Color(0xFFF5F5F5),
+            color: Colors.white,
+            borderColor: Theme.of(context).colorScheme.primary,
           ),
         ],
       ),
     );
+  }
+
+  onTapPrimary() {
+    setState(() {
+      isOpen = !isOpen;
+    });
   }
 
   onTapChild() {
@@ -89,7 +95,7 @@ class ExpandableFabViewState extends State<ExpandableFabView>
       setState(() {
         isOpen = false;
       });
-    }
+    } else {}
   }
 }
 
@@ -103,7 +109,9 @@ class _CategoryButton extends StatelessWidget {
     this.width,
     this.height,
     this.color,
+    this.borderColor = Colors.transparent,
     this.borderRadius = 8,
+    this.borderWidth = 1,
     this.onTap,
   });
 
@@ -114,7 +122,9 @@ class _CategoryButton extends StatelessWidget {
   final double? height;
   final EdgeInsets padding;
   final Color? color;
+  final Color borderColor;
   final double borderRadius;
+  final double borderWidth;
 
   final Function()? onTap;
 
@@ -129,6 +139,10 @@ class _CategoryButton extends StatelessWidget {
           color: color,
           borderRadius: BorderRadius.circular(
             borderRadius,
+          ),
+          border: Border.all(
+            width: borderWidth,
+            color: borderColor,
           ),
         ),
         padding: padding,

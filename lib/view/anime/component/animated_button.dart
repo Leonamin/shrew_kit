@@ -18,6 +18,10 @@ class AnimatedToggleButton extends StatefulWidget {
     this.closeColor,
     this.openIconColor,
     this.closeIconColor,
+    this.openBorderColor = Colors.transparent,
+    this.closeBorderColor = Colors.transparent,
+    this.openBorderWidth = 1,
+    this.closeBorderWidth = 1,
     this.openPadding = const EdgeInsets.all(0),
     this.closePadding = const EdgeInsets.all(0),
     this.openMargin = const EdgeInsets.all(0),
@@ -41,6 +45,11 @@ class AnimatedToggleButton extends StatefulWidget {
   final Color? closeColor;
   final Color? openIconColor;
   final Color? closeIconColor;
+  final Color openBorderColor;
+  final Color closeBorderColor;
+  final double openBorderWidth;
+  final double closeBorderWidth;
+
   final EdgeInsets openPadding;
   final EdgeInsets closePadding;
   final EdgeInsets openMargin;
@@ -76,6 +85,11 @@ class _AnimatedToggleButtonState extends State<AnimatedToggleButton> {
 
   Color get color => isOpend ? openColor : closeColor;
   double get borderRadius => isOpend ? openSize.width : closeSize.width;
+  Color get borderColor =>
+      isOpend ? widget.openBorderColor : widget.closeBorderColor;
+
+  double get borderWidth =>
+      isOpend ? widget.openBorderWidth : widget.closeBorderWidth;
   double get width => isOpend ? openSize.width : closeSize.width;
   double get height => isOpend ? openSize.height : closeSize.height;
 
@@ -163,6 +177,7 @@ class _AnimatedToggleButtonState extends State<AnimatedToggleButton> {
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(borderRadius),
+          border: Border.all(color: borderColor, width: borderWidth),
         ),
         constraints: const BoxConstraints(minHeight: 56, minWidth: 56),
         width: width,
