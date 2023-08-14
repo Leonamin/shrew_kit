@@ -22,6 +22,7 @@ class AnimatedToggleButton extends StatefulWidget {
     this.closePadding = const EdgeInsets.all(0),
     this.openMargin = const EdgeInsets.all(0),
     this.closeMargin = const EdgeInsets.all(0),
+    this.onTap,
   });
 
   final bool on;
@@ -44,6 +45,8 @@ class AnimatedToggleButton extends StatefulWidget {
   final EdgeInsets closePadding;
   final EdgeInsets openMargin;
   final EdgeInsets closeMargin;
+
+  final Function()? onTap;
 
   @override
   State<AnimatedToggleButton> createState() => _AnimatedToggleButtonState();
@@ -69,13 +72,15 @@ class _AnimatedToggleButtonState extends State<AnimatedToggleButton> {
   late Size openSize;
   late Size closeSize;
 
-  Color get color => widget.on ? openColor : closeColor;
-  double get borderRadius => widget.on ? openSize.width : closeSize.width;
-  double get width => widget.on ? openSize.width : closeSize.width;
-  double get height => widget.on ? openSize.height : closeSize.height;
+  bool get isOpend => !widget.on;
 
-  double get openOpacity => widget.on ? 1 : 0;
-  double get closeOpacity => widget.on ? 0 : 1;
+  Color get color => isOpend ? openColor : closeColor;
+  double get borderRadius => isOpend ? openSize.width : closeSize.width;
+  double get width => isOpend ? openSize.width : closeSize.width;
+  double get height => isOpend ? openSize.height : closeSize.height;
+
+  double get openOpacity => isOpend ? 1 : 0;
+  double get closeOpacity => isOpend ? 0 : 1;
 
   @override
   void initState() {
@@ -152,43 +157,46 @@ class _AnimatedToggleButtonState extends State<AnimatedToggleButton> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(borderRadius),
-      ),
-      constraints: const BoxConstraints(minHeight: 56, minWidth: 56),
-      width: width,
-      height: height,
-      padding: widget.on ? widget.openPadding : widget.closePadding,
-      margin: widget.on ? widget.openMargin : widget.closeMargin,
-      alignment: widget.on ? Alignment.center : AlignmentDirectional.topCenter,
-      duration: widget.duration,
-      curve: widget.curve,
-      child: Center(
-        child: Stack(
-          children: [
-            _ChildButton(
-              key: UniqueKey(),
-              opacity: openOpacity,
-              duration: widget.duration,
-              iconData: widget.openIcon,
-              iconSize: widget.iconSize,
-              iconColor: widget.openIconColor,
-              label: widget.openLabel,
-              labelStyle: openLabelStyle,
-            ),
-            _ChildButton(
-              key: UniqueKey(),
-              opacity: closeOpacity,
-              duration: widget.duration,
-              iconData: widget.closeIcon,
-              iconSize: widget.iconSize,
-              iconColor: widget.closeIconColor,
-              label: widget.closeLabel,
-              labelStyle: closeLabelStyle,
-            ),
-          ],
+    return GestureDetector(
+      onTap: widget.onTap,
+      child: AnimatedContainer(
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(borderRadius),
+        ),
+        constraints: const BoxConstraints(minHeight: 56, minWidth: 56),
+        width: width,
+        height: height,
+        padding: isOpend ? widget.openPadding : widget.closePadding,
+        margin: isOpend ? widget.openMargin : widget.closeMargin,
+        alignment: isOpend ? Alignment.center : AlignmentDirectional.topCenter,
+        duration: widget.duration,
+        curve: widget.curve,
+        child: Center(
+          child: Stack(
+            children: [
+              _ChildButton(
+                key: UniqueKey(),
+                opacity: openOpacity,
+                duration: widget.duration,
+                iconData: widget.openIcon,
+                iconSize: widget.iconSize,
+                iconColor: widget.openIconColor,
+                label: widget.openLabel,
+                labelStyle: openLabelStyle,
+              ),
+              _ChildButton(
+                key: UniqueKey(),
+                opacity: closeOpacity,
+                duration: widget.duration,
+                iconData: widget.closeIcon,
+                iconSize: widget.iconSize,
+                iconColor: widget.closeIconColor,
+                label: widget.closeLabel,
+                labelStyle: closeLabelStyle,
+              ),
+            ],
+          ),
         ),
       ),
     );
