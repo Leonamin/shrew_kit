@@ -41,51 +41,113 @@ class ExpandableFabViewState extends State<ExpandableFabView>
       ),
       floatingActionButton: SpeedDialFAB(
         controller: _animationController,
-        primaryChild: GestureDetector(
+        primaryChild: AnimatedToggleButton(
+          on: isOpen,
+          openColor: Theme.of(context).colorScheme.primary,
+          openIconColor: Theme.of(context).colorScheme.onPrimary,
+          openLabel: '기록하기 ',
+          openPadding: EdgeInsets.symmetric(horizontal: 10),
+          openLabelStyle: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+          closeColor: Color(0xFFF5F5F5),
           onTap: () {
             setState(() {
               isOpen = !isOpen;
             });
           },
-          child: AnimatedToggleButton(
-            key: ValueKey('primary'),
-            on: isOpen,
-            openColor: Theme.of(context).colorScheme.primary,
-            openIconColor: Theme.of(context).colorScheme.onPrimary,
-            closeColor: Color(0xFFF5F5F5),
-            openLabel: '기록하기',
-            openPadding: EdgeInsets.symmetric(horizontal: 10),
-            openLabelStyle: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
-          ),
         ),
         open: isOpen,
         children: [
-          _buildChildFAB(),
-          _buildChildFAB(),
-          _buildChildFAB(),
-          _buildChildFAB(),
-          _buildChildFAB(),
+          _CategoryButton(
+            onTap: onTapChild,
+            icon: Icon(Icons.park_sharp),
+            title: '산책하기',
+            width: 130,
+            height: 56,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            color: Color(0xFFF5F5F5),
+          ),
+          _CategoryButton(
+            onTap: onTapChild,
+            icon: Icon(Icons.note_add_outlined),
+            title: '일지작성',
+            width: 130,
+            height: 56,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            color: Color(0xFFF5F5F5),
+          ),
         ],
       ),
     );
   }
 
-  _buildChildFAB() {
-    return InkWell(
-      onTap: () {
-        if (isOpen) {
-          setState(() {
-            isOpen = false;
-          });
-        }
-      },
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [Icon(Icons.wrap_text), Text('자식')],
+  onTapChild() {
+    if (isOpen) {
+      setState(() {
+        isOpen = false;
+      });
+    }
+  }
+}
+
+class _CategoryButton extends StatelessWidget {
+  const _CategoryButton({
+    super.key,
+    required this.icon,
+    required this.title,
+    this.padding = const EdgeInsets.symmetric(horizontal: 8),
+    this.textStyle,
+    this.width,
+    this.height,
+    this.color,
+    this.borderRadius = 8,
+    this.onTap,
+  });
+
+  final Widget icon;
+  final String title;
+  final TextStyle? textStyle;
+  final double? width;
+  final double? height;
+  final EdgeInsets padding;
+  final Color? color;
+  final double borderRadius;
+
+  final Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(
+            borderRadius,
+          ),
+        ),
+        padding: padding,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            icon,
+            Text(
+              title,
+              style: textStyle ??
+                  TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+            ),
+          ],
+        ),
       ),
     );
   }
