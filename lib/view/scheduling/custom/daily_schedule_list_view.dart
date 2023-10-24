@@ -3,6 +3,9 @@ import 'package:shrew_kit/component/schedul_calendar/schedule_unit.dart';
 import 'package:shrew_kit/main.dart';
 import 'package:shrew_kit/util/date_time_ext.dart';
 
+/// unused
+/// 타일 호버링 테스트용 위젯
+@Deprecated('테스트용 위젯')
 class DailyScheduleListView extends StatefulWidget {
   const DailyScheduleListView({super.key});
 
@@ -14,7 +17,7 @@ class _DailyScheduleListViewState extends State<DailyScheduleListView> {
   static const _headerRatio = 1;
   static const _bodyRatio = 7;
   static const defaultItemHeight = 60.0;
-  ScheduleUnit _curScheduleUnit = ScheduleUnit.min5;
+  final ScheduleUnit _curScheduleUnit = ScheduleUnit.min5;
 
   final ScrollController _scrollController = ScrollController();
 
@@ -22,7 +25,7 @@ class _DailyScheduleListViewState extends State<DailyScheduleListView> {
   double yPosition = 0;
   bool isDragging = false;
 
-  List<DateTime> _timeList = [];
+  final List<DateTime> _timeList = [];
 
   @override
   void initState() {
