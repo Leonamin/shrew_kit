@@ -2,13 +2,13 @@ import 'dart:collection';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:shrew_kit/component/hour_minute.dart';
 import 'package:shrew_kit/component/schedul_calendar/event_grid.dart';
 import 'package:shrew_kit/component/schedul_calendar/schedule.dart';
 import 'package:shrew_kit/component/schedul_calendar/typedefs.dart';
 import 'package:shrew_kit/component/schedul_calendar/unit_column_style.dart';
 import 'package:shrew_kit/component/schedul_calendar/utils/builders.dart';
 import 'package:shrew_kit/component/schedul_calendar/daily_schedule_style.dart';
-import 'package:shrew_kit/component/schedul_calendar/utils/hour_minute.dart';
 import 'package:shrew_kit/component/schedul_calendar/schedule_unit.dart';
 import 'package:shrew_kit/component/schedul_calendar/unit_column.dart';
 import 'package:shrew_kit/util/date_time_ext.dart';
@@ -37,6 +37,7 @@ class DailyScheduleView extends StatefulWidget {
     this.onHoverEnd,
     this.eventBuilder,
     this.previewBuilder,
+    this.scrollPhysics = const ClampingScrollPhysics(),
   })  : date = date.withStartTime(),
         initialTime = DateTime.now(); // FIXME : 오늘 날짜 아닌 날짜 비교해서 넣어주자
 
@@ -59,6 +60,9 @@ class DailyScheduleView extends StatefulWidget {
   final EventBuilder? eventBuilder;
   final PreviewBuilder? previewBuilder;
 
+  // UI 관련
+  final ScrollPhysics scrollPhysics;
+
   @override
   State<DailyScheduleView> createState() => DailyScheduleViewState();
 }
@@ -67,7 +71,6 @@ class DailyScheduleViewState extends State<DailyScheduleView> {
   final ScrollController verticalScrollController = ScrollController();
   final Map<Schedule, EventDrawProperties> eventsDrawProperties = HashMap();
 
-  /// The flutter week view events.
   late List<Schedule> events;
 
   bool isDragging = false;
@@ -83,10 +86,10 @@ class DailyScheduleViewState extends State<DailyScheduleView> {
   void initState() {
     super.initState();
     scheduleScrollToInitialTime();
-    reset();
+    _reset();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        setState(createEventsDrawProperties);
+        setState(_createEventsDrawProperties);
       }
     });
   }
@@ -99,52 +102,52 @@ class DailyScheduleViewState extends State<DailyScheduleView> {
       scheduleScrollToInitialTime();
     }
 
-    reset();
-    createEventsDrawProperties();
+    _reset();
+    _createEventsDrawProperties();
   }
 
   @override
   Widget build(BuildContext context) {
-    var mainWidget = createMainWidget();
+    var mainWidget = _createMainWidget();
     return mainWidget;
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    verticalScrollController.dispose();
+  }
+
   // 위젯 관련
-  Widget createMainWidget() {
+
+  /// 메인 화면 생성
+  /// 배경, 제스쳐, 호버링 감지, `events`들을 그리는 역할
+  Widget _createMainWidget() {
     List<Widget> children = [];
 
     Widget gesture = Positioned.fill(
         child: GestureDetector(
       onTapUp: (details) {
-        DateTime timeTapped = widget.date.add(
+        DateTime timeOfTappedPos = widget.date.add(
             calculateOffsetToHourMinute(details.localPosition.dy).asDuration);
-        widget.onBackgroundTapped?.call(timeTapped);
+        widget.onBackgroundTapped?.call(timeOfTappedPos);
       },
-      onLongPressStart: onPreviewStart,
-      onLongPressMoveUpdate: onPreviewMoveUpdate,
-      onLongPressEnd: onPrivewEnd,
-      onLongPressCancel: onPreviewCancel,
-      child: Container(
-        color: Colors.transparent,
-      ),
+      onLongPressStart: _onPreviewStart,
+      onLongPressMoveUpdate: _onPreviewMoveUpdate,
+      onLongPressEnd: _onPrivewEnd,
+      onLongPressCancel: _onPreviewCancel,
     ));
 
-    final previewStart = calculateOffsetToHourMinute(hoverPos).toDateTime();
-    final previewEnd = previewStart.add(widget.style.unit.duration);
+    final previewStartTime = calculateOffsetToHourMinute(hoverPos).toDateTime();
+    // TODO : 미리보기 단위 추가 현재는 임시로 화면 그리는 단위 삽입
+    // 미리 보기 시간에 맞춰서 바꾼다.
+    final previewEndTime = previewStartTime.add(widget.style.unit.duration);
+    final previewWidgetHeight = widget.style.unitRowHeight;
 
-    Widget previewEvnet = Positioned(
-      left: widget.unitColumnStyle.width,
-      right: 0,
-      top: hoverPos,
-      child: widget.previewBuilder?.call(
-            context,
-            widget.style.unitRowHeight, // TODO : 미리보기 단위 추가
-            previewStart,
-            previewEnd,
-          ) ??
-          EventTile(
-            height: widget.style.unitRowHeight,
-          ),
+    Widget previewEvnet = _createPreviewEventWidget(
+      previewWidgetHeight,
+      previewStartTime,
+      previewEndTime,
     );
 
     children.add(
@@ -156,17 +159,20 @@ class DailyScheduleViewState extends State<DailyScheduleView> {
     );
 
     children.addAll(
-        eventsDrawProperties.entries.map((entry) => entry.value.createWidget(
-              context,
-              widget,
-              null,
-              entry.key,
-            )));
+      eventsDrawProperties.entries.map(
+        (each) => each.value.createWidget(
+          context,
+          widget,
+          null,
+          each.key,
+        ),
+      ),
+    );
 
     Widget mainWidget = SizedBox(
       height: calculateHeight(),
       child: Stack(children: [
-        createBackground(),
+        _createBackground(),
         // add Background
         // add Gesture
         gesture,
@@ -179,20 +185,32 @@ class DailyScheduleViewState extends State<DailyScheduleView> {
 
     mainWidget = SingleChildScrollView(
       controller: verticalScrollController,
-      physics: const BouncingScrollPhysics(),
+      physics: widget.scrollPhysics,
       child: mainWidget,
     );
 
     return mainWidget;
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    verticalScrollController.dispose();
-  }
+  Widget _createPreviewEventWidget(
+    double itemHeight,
+    DateTime startTime,
+    DateTime endTime,
+  ) =>
+      Positioned(
+        left: widget.unitColumnStyle.width,
+        right: 0,
+        top: hoverPos,
+        child: widget.previewBuilder?.call(
+              context,
+              itemHeight,
+              startTime,
+              endTime,
+            ) ??
+            const SizedBox.shrink(),
+      );
 
-  Widget createBackground() => Positioned.fill(
+  Widget _createBackground() => Positioned.fill(
         child: CustomPaint(
           painter: widget.style.createBackgroundPainter(
             view: widget,
@@ -201,21 +219,48 @@ class DailyScheduleViewState extends State<DailyScheduleView> {
         ),
       );
 
+  /// `widge`의 `events`들을 `EventDrawProperties`로 변환하여 UI를 그린다
+  void _createEventsDrawProperties() {
+    EventGrid eventsGrid = EventGrid();
+    for (Schedule event in List.of(events)) {
+      EventDrawProperties drawProperties = eventsDrawProperties[event] ??
+          EventDrawProperties(widget, event, widget.isRTL);
+      if (!drawProperties.shouldDraw) {
+        events.remove(event);
+        continue;
+      }
+
+      drawProperties.calculateTopAndHeight(calculateTopOffset);
+      if (drawProperties.left == null || drawProperties.width == null) {
+        eventsGrid.add(drawProperties);
+      }
+
+      eventsDrawProperties[event] = drawProperties;
+    }
+
+    if (eventsGrid.drawPropertiesList.isNotEmpty) {
+      double eventsColumnWidth =
+          (context.findRenderObject() as RenderBox).size.width -
+              widget.unitColumnStyle.width;
+      eventsGrid.processEvents(widget.unitColumnStyle.width, eventsColumnWidth);
+    }
+  }
+
   // 호버링 관련
-  void onPreviewStart(LongPressStartDetails details) {
+  void _onPreviewStart(LongPressStartDetails details) {
     isDragging = true;
     hoverPos = clampToOffsetByHourMinute(
         calculateOffsetToHourMinute(details.localPosition.dy));
     setState(() {});
   }
 
-  void onPreviewMoveUpdate(LongPressMoveUpdateDetails details) {
+  void _onPreviewMoveUpdate(LongPressMoveUpdateDetails details) {
     hoverPos = clampToOffsetByHourMinute(
         calculateOffsetToHourMinute(details.localPosition.dy));
     setState(() {});
   }
 
-  void onPrivewEnd(LongPressEndDetails details) {
+  void _onPrivewEnd(LongPressEndDetails details) {
     isDragging = false;
     final hourMinute = calculateOffsetToHourMinute(hoverPos);
     final dt = widget.date
@@ -223,15 +268,18 @@ class DailyScheduleViewState extends State<DailyScheduleView> {
     widget.onHoverEnd?.call(dt);
   }
 
-  void onPreviewCancel() {
+  void _onPreviewCancel() {
     isDragging = false;
     setState(() {});
   }
 
-  // 계산 관련
+  // context로 접근해서 사용 가능한 함수 목록
+
+  /// 높이를 계산
   double calculateHeight([double? unitRowHeight]) =>
       calculateTopOffset(widget.maximumTime, unitRowHeight: unitRowHeight);
 
+  /// 시간을 기준으로 높이를 계산
   double calculateTopOffset(
     HourMinute time, {
     HourMinute? minimumTime,
@@ -244,11 +292,13 @@ class DailyScheduleViewState extends State<DailyScheduleView> {
         unit: widget.style.unit,
       );
 
+  /// Y축 위치를 기준으로 시간을 계산
+  /// hh:mm HourMinute으로 반환
   HourMinute calculateOffsetToHourMinute(double posY) {
     double unitRowHeight = widget.style.unitRowHeight;
     double calcMinute = posY * widget.style.unit.minute / unitRowHeight;
 
-    if (calcMinute < 0) {
+    if (calcMinute < widget.minimumTime.minute) {
       return widget.minimumTime;
     }
 
@@ -286,61 +336,10 @@ class DailyScheduleViewState extends State<DailyScheduleView> {
     }
   }
 
-  void reset() {
+  /// [eventsDrawProperties]를 초기화하여 다시 그린다
+  /// [initState]를 제외하면 [didUpdateWidget]에서 변경사항이 발생했을 때 다시 그린다.
+  void _reset() {
     eventsDrawProperties.clear();
     events = List.of(widget.events)..sort();
-  }
-
-  /// Creates the events draw properties and add them to the current list.
-  void createEventsDrawProperties() {
-    EventGrid eventsGrid = EventGrid();
-    for (Schedule event in List.of(events)) {
-      EventDrawProperties drawProperties = eventsDrawProperties[event] ??
-          EventDrawProperties(widget, event, widget.isRTL);
-      if (!drawProperties.shouldDraw) {
-        events.remove(event);
-        continue;
-      }
-
-      drawProperties.calculateTopAndHeight(calculateTopOffset);
-      if (drawProperties.left == null || drawProperties.width == null) {
-        eventsGrid.add(drawProperties);
-      }
-
-      eventsDrawProperties[event] = drawProperties;
-    }
-
-    if (eventsGrid.drawPropertiesList.isNotEmpty) {
-      double eventsColumnWidth =
-          (context.findRenderObject() as RenderBox).size.width -
-              widget.unitColumnStyle.width;
-      eventsGrid.processEvents(widget.unitColumnStyle.width, eventsColumnWidth);
-    }
-  }
-}
-
-class EventTile extends StatelessWidget {
-  const EventTile({super.key, required this.height});
-
-  final double height;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: height,
-      child: Padding(
-        padding: const EdgeInsets.all(1.0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.blue.withOpacity(0.5),
-            border: Border.all(
-              color: Colors.blue,
-              width: 1,
-            ),
-            borderRadius: BorderRadius.circular(5),
-          ),
-        ),
-      ),
-    );
   }
 }

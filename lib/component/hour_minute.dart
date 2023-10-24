@@ -25,6 +25,8 @@ class HourMinute {
   /// 분
   final int minute;
 
+  int get totalMinutes => hour * 60 + minute;
+
   const HourMinute._internal({
     required this.hour,
     required this.minute,
@@ -129,4 +131,8 @@ class HourMinute {
 
   int _calculateDifference(HourMinute other) =>
       (hour * 60 - other.hour * 60) + (minute - other.minute);
+}
+
+extension HourMinuteExt on HourMinute {
+  DateTime toDateTime() => DateTime.now().of(hour: hour, minute: minute);
 }

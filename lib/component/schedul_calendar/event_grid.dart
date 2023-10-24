@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shrew_kit/component/hour_minute.dart';
 import 'package:shrew_kit/component/schedul_calendar/daily_schedule_view.dart';
 import 'package:shrew_kit/component/schedul_calendar/schedule.dart';
-import 'package:shrew_kit/component/schedul_calendar/utils/hour_minute.dart';
 
 /// An useful class that allows to position events in a grid.
 /// Thanks to https://stackoverflow.com/a/11323909/3608831.
