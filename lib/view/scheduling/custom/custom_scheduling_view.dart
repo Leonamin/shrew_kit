@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shrew_kit/common/config/routes.dart';
+import 'package:shrew_kit/common/constants/color_hue.dart';
 import 'package:shrew_kit/component/schedul_calendar/daily_schedule_view.dart';
 import 'package:shrew_kit/component/schedul_calendar/schedule.dart';
 import 'package:shrew_kit/component/schedul_calendar/schedule_unit.dart';
 import 'package:shrew_kit/util/date_time_ext.dart';
 import 'package:shrew_kit/view/scheduling/custom/add_schedule_form.dart';
+
+part 'component/schedule_preview_tile.dart';
+part 'component/schedule_tile.dart';
 
 class CustomSchedulingView extends StatefulWidget {
   const CustomSchedulingView({super.key});
@@ -33,14 +37,14 @@ class _CustomSchedulingViewState extends State<CustomSchedulingView> {
         date: DateTime.now(),
         onHoverEnd: onPreviewCalled,
         eventBuilder: (context, schedule, dayView, height, width) {
-          return _EventWidget(
+          return _ScheduleTile(
             height: height,
             width: width,
             schedule: schedule,
           );
         },
         previewBuilder: (context, height, start, end) {
-          return _PreviewWidget(
+          return _SchedulePreviewTile(
             maxHeight: height,
             start: start,
             end: end,
@@ -66,100 +70,5 @@ class _CustomSchedulingViewState extends State<CustomSchedulingView> {
         title: form.title, description: '', start: form.start, end: form.end);
     scheduleList.add(schedule);
     setState(() {});
-  }
-}
-
-class _EventWidget extends StatelessWidget {
-  const _EventWidget({
-    super.key,
-    required this.schedule,
-    required this.height,
-    required this.width,
-  });
-
-  final Schedule schedule;
-  final double height;
-  final double width;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: height,
-      width: width,
-      child: Padding(
-        padding: const EdgeInsets.all(1.0).copyWith(bottom: 2),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.inversePrimary,
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: InkWell(
-            onTap: () {},
-            splashColor: Colors.black,
-            child: Center(
-              child: Text(
-                schedule.title,
-                style:
-                    TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _PreviewWidget extends StatelessWidget {
-  const _PreviewWidget({
-    super.key,
-    required this.maxHeight,
-    required this.start,
-    required this.end,
-  });
-
-  final double maxHeight;
-  final DateTime start;
-  final DateTime? end;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: maxHeight,
-      child: Padding(
-        padding: const EdgeInsets.all(1.0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.tertiary,
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: Center(
-            child: RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: start.toHM(),
-                  ),
-                  if (end != null) ...[
-                    const TextSpan(text: ' '),
-                    WidgetSpan(
-                      child: Icon(
-                        Icons.arrow_right_rounded,
-                        color: Theme.of(context).colorScheme.onTertiary,
-                      ),
-                    ),
-                    const TextSpan(text: ' '),
-                    TextSpan(text: end!.toHM()),
-                  ]
-                ],
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onTertiary,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }

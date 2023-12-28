@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:shrew_kit/util/date_time_ext.dart';
 
 class NowDateTimeGetter {
@@ -8,31 +9,29 @@ class NowDateTimeGetter {
 
 NowDateTimeGetter dateTimeGetter = NowDateTimeGetter();
 
-/// Simply represents a hour and a minute.
-/// This is not a duration but more of an instant in the current day.
 class HourMinute {
-  /// "Zero" time.
+  /// 최소 시간
   static const HourMinute zero = HourMinute._internal(hour: 0, minute: 0);
 
-  /// "Min" time.
+  /// 최소 시간
   static const HourMinute min = zero;
 
-  /// "Max" time.
+  /// 최대 시간.
   static const HourMinute max = HourMinute._internal(hour: 24, minute: 0);
 
-  /// The current hour.
+  /// 시간
   final int hour;
 
-  /// The current minute.
+  /// 분
   final int minute;
 
-  /// Allows to internally create a new hour minute time instance.
+  int get totalMinutes => hour * 60 + minute;
+
   const HourMinute._internal({
     required this.hour,
     required this.minute,
   });
 
-  /// Creates a new hour minute time instance.
   const HourMinute({
     int hour = 0,
     int minute = 0,
@@ -41,53 +40,43 @@ class HourMinute {
           minute: minute < 0 ? 0 : (minute > 59 ? 59 : minute),
         );
 
-  /// Creates a new hour minute time instance from a given date time object.
+  factory HourMinute.fromMinutes(int totalMinutes) {
+    int hour = totalMinutes ~/ 60;
+    int minute = totalMinutes % 60;
+    return HourMinute._internal(hour: hour, minute: minute);
+  }
+
   HourMinute.fromDateTime({
     required DateTime dateTime,
   }) : this._internal(hour: dateTime.hour, minute: dateTime.minute);
 
-  /// Creates a new hour minute time instance from a given date time object.
+  HourMinute.fromTimeOfDay({
+    required TimeOfDay timeOfDay,
+  }) : this._internal(hour: timeOfDay.hour, minute: timeOfDay.minute);
+
   factory HourMinute.fromDuration({
     required Duration duration,
   }) {
-    int hour = 0;
-    int minute = duration.inMinutes;
-    while (minute >= 60) {
-      hour += 1;
-      minute -= 60;
-    }
-    return HourMinute._internal(hour: hour, minute: minute);
+    final totalMinutes = duration.inMinutes;
+    return HourMinute.fromMinutes(totalMinutes);
   }
 
-  /// Creates a new hour minute time instance.
   HourMinute.now() : this.fromDateTime(dateTime: dateTimeGetter.now());
 
-  /// Calculates the sum of this hour minute and another.
   HourMinute add(HourMinute other) {
-    int hour = this.hour + other.hour;
-    int minute = this.minute + other.minute;
-    while (minute > 59) {
-      hour++;
-      minute -= 60;
-    }
-    return HourMinute._internal(hour: hour, minute: minute);
+    int totalMinutes = (hour + other.hour) * 60 + (minute + other.minute);
+    return HourMinute.fromMinutes(totalMinutes);
   }
 
-  /// Calculates the difference between this hour minute and another.
   HourMinute subtract(HourMinute other) {
-    int hour = this.hour - other.hour;
-    if (hour < 0) {
+    int totalMinutesThis = hour * 60 + minute;
+    int totalMinutesOther = other.hour * 60 + other.minute;
+    int totalMinutesResult = totalMinutesThis - totalMinutesOther;
+
+    if (totalMinutesResult < 0) {
       return HourMinute.zero;
     }
-    int minute = this.minute - other.minute;
-    while (minute < 0) {
-      if (hour == 0) {
-        return HourMinute.zero;
-      }
-      hour--;
-      minute += 60;
-    }
-    return HourMinute._internal(hour: hour, minute: minute);
+    return HourMinute.fromMinutes(totalMinutesResult);
   }
 
   @override
@@ -131,18 +120,15 @@ class HourMinute {
     return _calculateDifference(other) >= 0;
   }
 
-  /// Attaches this instant to a provided date.
   DateTime atDate(DateTime date) => date
       .of(year: date.year, month: date.month, day: date.day)
       .add(asDuration);
 
-  /// Converts this instance into a duration.
   Duration get asDuration => Duration(hours: hour, minutes: minute);
 
   @override
   int get hashCode => hour.hashCode + minute.hashCode;
 
-  /// Returns the difference in minutes between this and another hour minute time instance.
   int _calculateDifference(HourMinute other) =>
       (hour * 60 - other.hour * 60) + (minute - other.minute);
 }
